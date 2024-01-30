@@ -28,6 +28,9 @@
   align-items: center;
 }
 
+.text{
+  display: inline;
+}
 
 .highlights {
   display: flex;

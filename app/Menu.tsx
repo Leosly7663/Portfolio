@@ -9,17 +9,17 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white py-4 px-6 flex justify-between items-center">
-      <h1 className="text-xl font-bold">Leo</h1>
+    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white flex justify-between items-center">
+      <h1 className="font-semibold text-3xl px-6">Leo</h1>
       <div className="flex space-x-4">
-        <button className="hover:text-gray-300" onClick={() => scrollToSection('section1')}>
-          Section 1
+        <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('section1')}>
+          About Me
         </button>
-        <button className="hover:text-gray-300" onClick={() => scrollToSection('section2')}>
-          Section 2
+        <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('section2')}>
+          Portfolio
         </button>
-        <button className="hover:text-gray-300" onClick={() => scrollToSection('section3')}>
-          Section 3
+        <button className="hover:text-gray-600 py-4 px-6" onClick={() => scrollToSection('section3')}>
+          Contact
         </button>
       </div>
     </nav>

@@ -9,16 +9,12 @@ import logo from './PFP.jpg'
 const App = () => {
 
   return (
-    <div className="body">
+    <div className="">
           <NavBar/>
         
-        <div className='Main pt-10'>
-          <div className='align-self-center'>
-            <TitleCard 
-            title="Hello World!" 
-            subtitle="My name is Leonardo Pietro Nigro and this is my profile"
-            />
-          </div>
+        <div className='Main pt-10 bg-slate-600'>
+          <TitleCard 
+          />
           <div>
             
           </div>
