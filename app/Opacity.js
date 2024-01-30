@@ -1,3 +1,4 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 
 function OpacityToggle(props) {
@@ -13,7 +14,7 @@ function OpacityToggle(props) {
 
   return (
     <span style={{display: 'inline', opacity: visible ? 1 : 0}}>
-      <p className='text'>{props.text}</p>
+      <p style={{display: 'inline'}}>{props.text}</p>
     </span>
   );
 }

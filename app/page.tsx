@@ -1,4 +1,4 @@
-
+"use client"
 import NavBar from './Menu';
 import TitleCard from './Profile';
 
