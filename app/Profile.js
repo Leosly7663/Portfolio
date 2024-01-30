@@ -1,14 +1,9 @@
 import React from 'react';
 import OpacityToggle from './Opacity.js'
-import pfp from './PFP.jpg'; // with import
-
 
 const TitleCard = () => {
   return (
     <div className="flex  justify-center mt-5 pt-5">
-      <div className="rounded-full overflow-hidden bg-emerald-600">
-        <img src={pfp} alt="User" className="w-160 h-160 rounded-full bg-emerald-200" />
-      </div>
       <div className="font-sans bg-slate-600">
         <div className="font-semibold text-4xl text-center ">
           <div className="text text-[#2bff00]">

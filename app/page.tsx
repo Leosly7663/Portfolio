@@ -1,9 +1,6 @@
-"use client"
 
-import React, { useState, useEffect } from 'react';
 import NavBar from './Menu';
 import TitleCard from './Profile';
-import logo from './PFP.jpg'
 
 
 const App = () => {
