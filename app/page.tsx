@@ -13,7 +13,7 @@ const App = () => {
           <TitleCard 
           />
           <div>
-            
+            Yes I really do own leonardonigro.com I have no idea how
           </div>
           <div>
             
