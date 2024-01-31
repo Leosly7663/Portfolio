@@ -1,4 +1,5 @@
 import React from 'react';
+import OpacityToggle from './Opacity';
 
 const NavBar: React.FC = () => {
   const scrollToSection = (id: string) => {
@@ -9,8 +10,19 @@ const NavBar: React.FC = () => {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-gray-800 text-white flex justify-between items-center">
-      <h1 className="font-semibold text-3xl px-6">Leo</h1>
+    <nav className="fixed z-10 top-0 left-0 w-full bg-gray-800 text-white flex justify-between items-center">
+      <div className="font-semibold text-2xl px-6">
+          <div className="text text-[#2bff00]">
+              root@Leo: 
+              <div className="text text-[#00a2ff]">
+                  ~ 
+              </div>
+              <div className="text text-[#e6e6e6]">
+                $ cd
+                <OpacityToggle text="_"/>   
+              </div>
+            </div>
+        </div>
       <div className="flex space-x-4">
         <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('section1')}>
           About Me
