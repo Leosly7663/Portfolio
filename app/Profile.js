@@ -4,23 +4,12 @@ import OpacityToggle from './Opacity.js'
 
 const TitleCard = () => {
   return (
-    <div className="flex  justify-center mt-5 pt-5">
-      <div className="font-sans bg-slate-600">
-        <div className="font-semibold text-4xl text-center ">
-          <div className="text text-[#2bff00]">
-              root@Leo: 
-              <div className="text text-[#00a2ff]">
-                  ~ 
-              </div>
-              <div className="text text-[#e6e6e6]">
-                $ Hello World!
-                <OpacityToggle text="_"/>   
-              </div>
+    <div className="w-full justify-center mt-5 pt-60 pb-40">
+      <div className="font-sans text-center font-oswald font-medium ">
+        <div className="text-8xl text-center text-[#d8d3f5]">
+          Leonardo Pietro Nigro
             </div>
-            </div>
-        <h3 className="text-gray-600 font-serif text-center">It seems you've found my website!</h3>
-        <p className="text-gray-600">You're here because something about me caught your eye. I have so much more to tell you about myself so please feel free to explore this site all about</p>
-        <p className="text-gray-600">Leo</p>
+        <h3 className="text-2xl text-center text-gray-200 font-serif text-center inline">Software Engineer </h3>
       </div>
     </div>
   );
