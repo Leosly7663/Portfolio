@@ -25,13 +25,13 @@ const NavBar: React.FC = () => {
         </div>
       <div className="flex space-x-4">
         <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('section1')}>
-          About Me
+          ~/About Me
         </button>
         <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('section2')}>
-          Portfolio
+          ~/Portfolio
         </button>
         <button className="hover:text-gray-600 py-4 px-6" onClick={() => scrollToSection('section3')}>
-          Contact
+          ~/Contact
         </button>
       </div>
     </nav>
