@@ -4,7 +4,7 @@ import OpacityToggle from './Opacity.js'
 
 const TitleCard = () => {
   return (
-    <div className="w-full justify-center mt-5 pt-60 pb-40">
+    <div className="w-full justify-center mt-5 pt-60 pb-60">
       <div className="font-sans text-center font-oswald font-medium ">
         <div className="text-8xl text-center text-[#d8d3f5]">
           Leonardo Pietro Nigro

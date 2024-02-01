@@ -6,7 +6,7 @@ const GradientTransition = function() {
 
   const settings = {
     canvas: {
-      height: 1000,
+      height: 3000,
       useBouncyWalls: false
     },
     particle: {

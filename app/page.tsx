@@ -3,6 +3,7 @@ import NavBar from './Menu';
 import TitleCard from './Profile';
 import GradientTransition from "./back";
 import About from "./about";
+import Projects from "./projects"
 
 const App = () => {
 
@@ -12,14 +13,18 @@ const App = () => {
         <NavBar/>
       </div>
       
-      <div className='Main pt-10 bg-slate-600'>
+      <div className='Main pt-10  bg-slate-600 '>
         <div className="absolute justify-center flex-col w-full">
           <TitleCard/>
           <About/>
+          <Projects/>
         </div>
         <div className=' w-full mt-4 bg-gradient-to-t from-black to-slate-600'>
           <GradientTransition/>
         </div>
+        
+        
+       
       </div>
     </div>
   );
