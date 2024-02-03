@@ -8,7 +8,7 @@ import Projects from "./projects"
 const App = () => {
 
   return (
-    <div className="">
+    <div className="bg-slate-600">
       <div className=" ">
         <NavBar/>
       </div>
