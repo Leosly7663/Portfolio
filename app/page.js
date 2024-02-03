@@ -2,7 +2,7 @@
 import NavBar from './Menu';
 import TitleCard from './Profile';
 import GradientTransition from "./back";
-import About from "./pages/about";
+import About from "./about";
 import Projects from "./projects";
 import Footer from "./footer.js";
 
@@ -16,7 +16,7 @@ export default function App() {
   const router = useRouter()
  
   return (
-    <button type="button" onClick={() => router.push('/about')}>
+    <button type="button" onClick={() => router.push('/python-HUD')}>
       Dashboard
     </button>
   );
