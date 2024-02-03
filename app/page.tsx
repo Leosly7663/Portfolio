@@ -16,6 +16,9 @@ const App = () => {
       
       <div className='Main pt-10  bg-slate-600 '>
         <div className="absolute justify-center flex-col w-full">
+          <div className=' bg-gradient-to-b from-gray-700 to-95% to-black absolute flex inset-0 -z-10'>
+            <GradientTransition/>
+          </div>
           <TitleCard/>
           <div id="about">
             <About />
@@ -28,9 +31,8 @@ const App = () => {
           </div>
           
         </div>
-        <div className=' w-full mt-4 bg-gradient-to-t from-black to-slate-600'>
-          <GradientTransition/>
-        </div>
+
+        
         
         
        
