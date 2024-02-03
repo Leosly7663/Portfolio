@@ -4,6 +4,8 @@ import React from 'react';
 import { useState } from 'react';
 import ImageCarousel from './slider.js';
 
+
+
 const projects = [
   { name: "Project 1", subtitle: "Subtitle 1" },
   { name: "Project 2", subtitle: "Subtitle 2" },
@@ -15,6 +17,7 @@ const projects = [
 ];
 
 function ChildComponent(props) {
+
   const handleClick = (e) => {
     // Prevent propagation to the parent component
     e.stopPropagation();
@@ -25,6 +28,9 @@ function ChildComponent(props) {
     <div onClick={handleClick} className='flex justify-center'>
       <div className='text-center bg-[#a8a8aa] fixed px-10 py-10 space-x-10 w-4/5 h-5/6 top-24 justify-center flex rounded-xl'>
         <div className=' bg-[#4e4e5215] text-center w-full rounded-xl p-5 text-lg'>
+          <p className=" text-xl ">
+            Description: 
+          </p>
           {props.des}
         </div>
         <div className="pt-5 w-1/2 text-xl font-bold">
@@ -68,11 +74,15 @@ const Highlight = ({ name, subtitle, des }) => {
     );
   };
 
-const Project = ({ name, subtitle }) => {
+const Project = ({ name, subtitle, history }) => {
   const [isHovered, setIsHovered] = useState(false);
 
+  const navigateToNewPage = () => {
+    history.push('/newpage');
+  }
+
   return (
-    <div className="project" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div className="project" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={navigateToNewPage}>
       <div className="project-content">
         <h3 className="project-name">{name}</h3>
         {isHovered && <p className="project-subtitle">{subtitle}</p>}
