@@ -50,16 +50,16 @@ const Projects = () => {
 
     return(
 
-    <div class="bg-black bg-opacity-20 rounded-3xl p-2 mx-40 mt-96 flex-rw items-center justify-center">
-          <div className="flex">
+    <div class="bg-black bg-opacity-20 rounded-3xl p-2 mx-40 mt-96 flex flex-col items-center justify-center">
+          <div className="flex justify-center">
             {highlights.map((highlights, index) => (
               <Highlight key={index} name={highlights.name} subtitle={highlights.subtitle} />
             ))}
           </div>
-          <div className="">
-            {projects.map((project, index) => (
-              <Project key={index} name={project.name} subtitle={project.subtitle} />
-            ))}
+          <div className="justify-center flex flex-col">
+              {projects.map((project, index) => (
+                    <Project key={index} name={project.name} subtitle={project.subtitle} />
+                  ))}
           </div>
     </div>
     )
