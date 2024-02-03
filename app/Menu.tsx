@@ -5,7 +5,7 @@ const NavBar: React.FC = () => {
   const scrollToSection = (id: string) => {
     const element = document.getElementById(id);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: 'smooth', block: "nearest"});
     }
   };
 
@@ -24,13 +24,13 @@ const NavBar: React.FC = () => {
             </div>
         </div>
       <div className="flex space-x-4">
-        <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('section1')}>
+        <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('about')}>
           ~/About Me
         </button>
-        <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('section2')}>
+        <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('portfolio')}>
           ~/Portfolio
         </button>
-        <button className="hover:text-gray-600 py-4 px-6" onClick={() => scrollToSection('section3')}>
+        <button className="hover:text-gray-600 py-4 px-6" onClick={() => scrollToSection('contact')}>
           ~/Contact
         </button>
       </div>

@@ -4,6 +4,7 @@ import TitleCard from './Profile';
 import GradientTransition from "./back";
 import About from "./about";
 import Projects from "./projects"
+import Footer from "./footer.js"
 
 const App = () => {
 
@@ -16,8 +17,16 @@ const App = () => {
       <div className='Main pt-10  bg-slate-600 '>
         <div className="absolute justify-center flex-col w-full">
           <TitleCard/>
-          <About/>
-          <Projects/>
+          <div id="about">
+            <About />
+          </div>
+          <div id="portfolio">
+            <Projects/>
+          </div>
+          <div id="contact">
+            <Footer/>
+          </div>
+          
         </div>
         <div className=' w-full mt-4 bg-gradient-to-t from-black to-slate-600'>
           <GradientTransition/>
