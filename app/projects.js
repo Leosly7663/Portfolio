@@ -1,8 +1,10 @@
 "use client"
 import React from 'react';
+import { useRouter } from 'next/navigation'
 
 import { useState } from 'react';
 import ImageCarousel from './slider.js';
+
 
 const projects = [
   { name: "Project 1", subtitle: "Subtitle 1" },
@@ -70,9 +72,11 @@ const Highlight = ({ name, subtitle, des }) => {
 
 const Project = ({ name, subtitle }) => {
   const [isHovered, setIsHovered] = useState(false);
+  
+  const router = useRouter()  
 
   return (
-    <div className="project" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)}>
+    <div className="project" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => router.push('/python-HUD')}>
       <div className="project-content">
         <h3 className="project-name">{name}</h3>
         {isHovered && <p className="project-subtitle">{subtitle}</p>}
