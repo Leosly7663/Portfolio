@@ -16,11 +16,8 @@ const Footer = () => {
                         <a href="LeonardoNigroResume.pdf" target="_blank" rel="noopener noreferrer" className="text-white">
                         <img width="50" height="50" src="https://img.icons8.com/nolan/50/resume.png" alt="resume"/> Resume
                         </a>
-                        <a href="mailto:Leonardonigro11@gmail.com" className="text-white">
+                        <a href="mailto:Contact@leonardonigro.com" className="text-white">
                         <img width="50" height="50" src="https://img.icons8.com/fluency/50/new-post.png" alt="new-post"/> Email
-                        </a>
-                        <a href="tel:+7055004117" className="text-white">
-                        <img width="50" height="50" src="https://img.icons8.com/flat-round/64/phone.png" alt="phone"/>Phone
                         </a>
 
                     </div>
