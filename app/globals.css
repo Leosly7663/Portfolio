@@ -9,23 +9,11 @@
   src: url("../public/fonts/Oswald/Oswald-VariableFont_wght.ttf");
 }
 
-.project {
-  width: 300px;
-  height: 100px;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  border-radius: 8px;
-}
 
 .highlight {
-  width: 300px;
-  height: 300px;
-  background-color: rgba(255, 255, 255, 0.1);
+  width: 500px;
+  height: 150px;
+  background-color: rgba(255, 255, 255, 0.3);
   margin: 10px;
   display: flex;
   justify-content: center;
@@ -91,21 +79,52 @@
   border: none;
   border-radius: 9px; /* Large border-radius to make buttons rounded */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 400ms;
 }
 
-.highlight-button:hover {
-  background-color: #0e356b; /* Darker grey on hover */
+
+.highlights .highlight:hover {
+  background-color: rgba(201, 201, 201);
+  transform: scale(1.1, 1.1);
 }
 
-.project:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-.highlight:hover {
-  background-color: rgba(0, 0, 0, 0);
+.highlights:hover > .highlight:not(:hover) {
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
 }
 
-.highlight:click {
-  background-color: rgba(4, 107, 167, 0.2);
+
+.btn {
+  color: purple;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid purple;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  background: transparent;
+  position: relative;
+  transition: all 1s;
+  overflow: hidden;
 }
 
+.btn:hover {
+  color: white;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  top: 0;
+  left: -40px;
+  transform: skewX(45deg);
+  background-color: purple;
+  z-index: -1;
+  transition: all 1s;
+}
+
+.btn:hover::before {
+  width: 160%;
+}

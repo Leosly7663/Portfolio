@@ -5,6 +5,7 @@ import GradientTransition from "./back";
 import About from "./about";
 import Projects from "./projects"
 import Footer from "./footer.js"
+import Highlight from "./highlight.js"
 
 const App = () => {
 
@@ -23,8 +24,12 @@ const App = () => {
           <div id="about">
             <About />
           </div>
+          <div id="highlights">
+            <Highlight/>
+          </div>
           <div id="portfolio">
-            <Projects/>
+            {//<Projects/>
+            }
           </div>
           <div id="contact">
             <Footer/>

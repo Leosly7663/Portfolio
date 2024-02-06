@@ -6,15 +6,7 @@ import { useState } from 'react';
 import ImageCarousel from './slider.js';
 
 
-const projects = [
-  { name: "Project 1", subtitle: "Subtitle 1" },
-  { name: "Project 2", subtitle: "Subtitle 2" },
-  { name: "Project 3", subtitle: "Subtitle 3" },
-  { name: "Project 4", subtitle: "Subtitle 4" },
-  { name: "Project 5", subtitle: "Subtitle 5" },
-  { name: "Project 6", subtitle: "Subtitle 6" },
-  { name: "Project 7", subtitle: "Subtitle 7" },
-];
+
 
 function ChildComponent(props) {
   const handleClick = (e) => {
@@ -56,7 +48,7 @@ const Highlight = ({ name, subtitle, des }) => {
   
     return (
       <div>
-        <div className="highlight" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setIsClick(!isClick)}>
+        <div className=" highlight" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setIsClick(!isClick)}>
           <div className="highlight-content">
             <h3 className="highlight-name">{name}</h3>
           </div>
@@ -70,38 +62,22 @@ const Highlight = ({ name, subtitle, des }) => {
     );
   };
 
-const Project = ({ name, subtitle }) => {
-  const [isHovered, setIsHovered] = useState(false);
-  
-  const router = useRouter()  
-
-  return (
-    <div className="project" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => router.push('/python-HUD')}>
-      <div className="project-content">
-        <h3 className="project-name">{name}</h3>
-        {isHovered && <p className="project-subtitle">{subtitle}</p>}
-      </div>
-    </div>
-  );
-};
 
 
 const Projects = () => {
 
     return(
 
-    <div class="bg-black bg-opacity-20 rounded-3xl p-2 mx-40 mt-96 flex flex-col items-center justify-center">
-          <div className="flex justify-center">
+    <div class="bg-gray-900 bg-opacity-60 mb-20 pb-10 rounded-3xl p-2 mx-40 mt-40 flex flex-col items-center justify-center">
+          <h2 className='text-5xl  py-4 text-white'>
+            Smaller Projects
+          </h2>
+          <div className="flex justify-center flex-col items-center highlights w-3/5">
             {highlights.map((highlights, index) => (
               <Highlight key={index} name={highlights.name} des={highlights.des} subtitle={highlights.subtitle} />
             ))}
           </div>
-          <div className="justify-center flex flex-col">
-              {projects.map((project, index) => (
-                    <Project key={index} name={project.name} subtitle={project.subtitle} />
-                  ))}
-          </div>
-    </div>
+        </div>
     )
 }
 export default Projects;
