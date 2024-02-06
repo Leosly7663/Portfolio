@@ -5,6 +5,7 @@ import GradientTransition from "./back";
 import About from "./about";
 import Projects from "./projects"
 import Footer from "./footer.js"
+import Highlight from "./highlight.js"
 
 const App = () => {
 
@@ -22,6 +23,9 @@ const App = () => {
           <TitleCard/>
           <div id="about">
             <About />
+          </div>
+          <div>
+            <Highlight/>
           </div>
           <div id="portfolio">
             <Projects/>

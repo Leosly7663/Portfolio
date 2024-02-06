@@ -9,23 +9,11 @@
   src: url("../public/fonts/Oswald/Oswald-VariableFont_wght.ttf");
 }
 
-.project {
-  width: 300px;
-  height: 100px;
-  background-color: rgba(255, 255, 255, 0.1);
-  margin: 10px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  cursor: pointer;
-  transition: background-color 0.3s;
-  border-radius: 8px;
-}
 
 .highlight {
-  width: 300px;
-  height: 300px;
-  background-color: rgba(255, 255, 255, 0.1);
+  width: 500px;
+  height: 150px;
+  background-color: rgba(255, 255, 255, 0.3);
   margin: 10px;
   display: flex;
   justify-content: center;
@@ -94,15 +82,9 @@
   transition: background-color 0.3s ease;
 }
 
-.highlight-button:hover {
-  background-color: #0e356b; /* Darker grey on hover */
-}
 
-.project:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
 .highlight:hover {
-  background-color: rgba(0, 0, 0, 0);
+  background-color: rgba(201, 201, 201);
 }
 
 .highlight:click {
