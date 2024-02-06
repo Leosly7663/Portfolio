@@ -79,15 +79,52 @@
   border: none;
   border-radius: 9px; /* Large border-radius to make buttons rounded */
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: 400ms;
 }
 
 
-.highlight:hover {
+.highlights .highlight:hover {
   background-color: rgba(201, 201, 201);
+  transform: scale(1.1, 1.1);
 }
 
-.highlight:click {
-  background-color: rgba(4, 107, 167, 0.2);
+.highlights:hover > .highlight:not(:hover) {
+  filter: blur(10px);
+  transform: scale(0.9, 0.9);
 }
 
+
+.btn {
+  color: purple;
+  text-transform: uppercase;
+  text-decoration: none;
+  border: 2px solid purple;
+  padding: 10px 20px;
+  font-size: 17px;
+  font-weight: bold;
+  background: transparent;
+  position: relative;
+  transition: all 1s;
+  overflow: hidden;
+}
+
+.btn:hover {
+  color: white;
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 0%;
+  top: 0;
+  left: -40px;
+  transform: skewX(45deg);
+  background-color: purple;
+  z-index: -1;
+  transition: all 1s;
+}
+
+.btn:hover::before {
+  width: 160%;
+}

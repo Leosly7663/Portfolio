@@ -24,11 +24,12 @@ const App = () => {
           <div id="about">
             <About />
           </div>
-          <div>
+          <div id="highlights">
             <Highlight/>
           </div>
           <div id="portfolio">
-            <Projects/>
+            {//<Projects/>
+            }
           </div>
           <div id="contact">
             <Footer/>

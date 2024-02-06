@@ -48,7 +48,7 @@ const Highlight = ({ name, subtitle, des }) => {
   
     return (
       <div>
-        <div className="highlight" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setIsClick(!isClick)}>
+        <div className=" highlight" onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setIsClick(!isClick)}>
           <div className="highlight-content">
             <h3 className="highlight-name">{name}</h3>
           </div>
@@ -68,9 +68,11 @@ const Projects = () => {
 
     return(
 
-    <div class="bg-gray-900 bg-opacity-60 mb-20 pb-10 rounded-3xl p-2 mx-40 mt-96 flex flex-col items-center justify-center">
-          
-          <div className="flex justify-center flex-col pt-10">
+    <div class="bg-gray-900 bg-opacity-60 mb-20 pb-10 rounded-3xl p-2 mx-40 mt-40 flex flex-col items-center justify-center">
+          <h2 className='text-5xl  py-4 text-white'>
+            Smaller Projects
+          </h2>
+          <div className="flex justify-center flex-col items-center highlights w-3/5">
             {highlights.map((highlights, index) => (
               <Highlight key={index} name={highlights.name} des={highlights.des} subtitle={highlights.subtitle} />
             ))}

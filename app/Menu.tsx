@@ -27,8 +27,8 @@ const NavBar: React.FC = () => {
         <button className="hover:text-gray-400 py-4 px-6" onClick={() => scrollToSection('about')}>
           ~/About Me
         </button>
-        <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('portfolio')}>
-          ~/Portfolio
+        <button className="hover:text-gray-500 py-4 px-6" onClick={() => scrollToSection('highlights')}>
+          ~/Highlights
         </button>
         <button className="hover:text-gray-600 py-4 px-6" onClick={() => scrollToSection('contact')}>
           ~/Contact

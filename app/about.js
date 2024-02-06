@@ -23,8 +23,8 @@ const About = () => {
 
 
         <div class="flex-1 p-10 text-2xl text-gray-300">
-            I am a software engineer from Guelph Ontario. I have been coding and building projects for 5 years now and in the last 2 years I've upgraded my skills from simple functional projects for school to 
-            fully functional enterprise level applications. This website I built myself running React, Node.js, and Next.js and hosted by Vercel. While this might not be the prettiest I encourage you to look
+            I have been coding and building projects for 5 years now and in the last 2 years I've upgraded my skills from simple functional projects for school to 
+            fully functional enterprise level applications. This website is running React, Node.js, Next.js and hosted by Vercel. While this might not be the prettiest I encourage you to look
             further into my object oriented programming most notably in Python and C to see where my true talent lies in data manipulation and technical programming.
             <div className='flex justify-center space-x-5'>
             <Image
