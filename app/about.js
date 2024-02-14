@@ -23,9 +23,9 @@ const About = () => {
 
 
         <div class="flex-1 p-10 text-2xl text-gray-300">
-            I have been coding and building projects for 5 years now and in the last 2 years I've upgraded my skills from simple functional projects for school to 
-            fully functional enterprise level applications. This website is running React, Node.js, Next.js and hosted by Vercel. While this might not be the prettiest I encourage you to look
-            further into my object oriented programming most notably in Python and C to see where my true talent lies in data manipulation and technical programming.
+            I have been coding and building projects for 5 years now and in the last 2 years I've entered the workforce building enterprise level applications. This website is running React, Node.js, Next.js and hosted by Vercel.
+            My skill set is oriented around Software Engineering solutions, notably in microservice development and functional software services. I do not shy away from a challenge I am always looking for
+            new ways to expand my skills. I encourage you to look further into my object oriented programming most notably in Python and C in my highlights section. 
             <div className='flex justify-center space-x-5'>
             <Image
             src="/react-2.svg"
