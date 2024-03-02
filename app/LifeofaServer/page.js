@@ -60,14 +60,10 @@ const LifeofaServer = () => {
                 <h2 className="text-xl font-semibold mb-2">Notes</h2>
                 {/* Link to GitHub repository */}
                 <p className='text-lg '>
-                  This is a solo project so all design, development and Implementation is the intellectual and legal property of Leonardo Nigro and Life of a Server Inc.
-                  Due to company policy a Git Repo cannot be displayed for security reasons but feel free to contact us at contact@leonardonigro.com for references and 
-                  inquiries.<br/><br/>
+                  This is a solo project so all design, development and Implementation is done by Leonardo Nigro.
                   This app is written in React Native, we use Firebase for user data as we are a low server cost application running step tracking, and tip tracking
                   for the service industry <br/><br/>
-                  My personal impact at Life of a Server started as a technology consultant but as I grew close with the team I offered my skills in development and since then we have
-                  been working on v2.0.0 of the Life of a Server app, transitioning their old PHP tech stack to a more modern framework. I have learned a fantastic amount in this position
-                  and I have really started to understand to scope of an application and how a team is built and ran.
+                  Through this project my skills in development have grown exponentially and I have really started to understand to scope of an application and how a team is built and ran.
                 </p>
               </div>
             </div>
