@@ -1,7 +1,7 @@
 "use client"
 import NavBar from './Menu';
 import TitleCard from './Profile';
-import GradientTransition from "./back";
+import GradientTransition from "./backParticleMist";
 import About from "./about";
 import Projects from "./projects"
 import Footer from "./footer.js"
