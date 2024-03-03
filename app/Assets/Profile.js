@@ -1,6 +1,6 @@
 "use client"
 import React from 'react';
-import OpacityToggle from './Opacity.js'
+import OpacityToggle from "../Components/Opacity.js"
 
 const TitleCard = () => {
   return (
@@ -8,7 +8,7 @@ const TitleCard = () => {
       <div className="font-sans text-center font-oswald font-medium ">
         <div className="text-8xl text-center text-[#d8d3f5]">
           Leonardo Pietro Nigro
-            </div>
+        </div>
         <h3 className="text-2xl text-gray-200 font-serif text-center inline">Computer Engineering </h3>
       </div>
     </div>
