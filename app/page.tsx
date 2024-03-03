@@ -1,46 +1,46 @@
 "use client"
-import NavBar from './Menu';
-import TitleCard from './Profile';
-import GradientTransition from "./back";
-import About from "./about";
-import Projects from "./projects"
-import Footer from "./footer.js"
-import Highlight from "./highlight.js"
+import NavBar from './Components/Menu';
+import TitleCard from './Assets/Profile';
+import GradientTransition from "./Assets/backParticleMist";
+import About from "./Assets/aboutMe";
+import Projects from "./Assets/projects"
+import Footer from "./Assets/footer.js"
+import Highlight from "./Assets/highlights.js"
 
 const App = () => {
 
   return (
     <div className="bg-slate-600">
       <div className=" ">
-        <NavBar/>
+        <NavBar />
       </div>
-      
+
       <div className='Main pt-10  bg-slate-600 '>
         <div className="absolute justify-center flex-col w-full">
           <div className=' bg-gradient-to-b from-gray-700 to-95% to-black absolute flex inset-0 -z-10'>
-            <GradientTransition/>
+            <GradientTransition />
           </div>
-          <TitleCard/>
+          <TitleCard />
           <div id="about">
             <About />
           </div>
           <div id="highlights">
-            <Highlight/>
+            <Highlight />
           </div>
           <div id="portfolio">
             {//<Projects/>
             }
           </div>
           <div id="contact">
-            <Footer/>
+            <Footer />
           </div>
-          
+
         </div>
 
-        
-        
-        
-       
+
+
+
+
       </div>
     </div>
   );

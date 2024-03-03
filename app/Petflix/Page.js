@@ -1,7 +1,7 @@
 "use client"
 import React from 'react';
-import NavBar from '../Menu';
-import ImageCarousel from '../slider.js';
+import NavBar from '../Components/Menu';
+import ImageCarousel from '../Components/slider.js';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
