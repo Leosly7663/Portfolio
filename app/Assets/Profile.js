@@ -1,6 +1,5 @@
 "use client"
 import React from 'react';
-import OpacityToggle from "../Components/Opacity.js"
 
 const TitleCard = () => {
   return (

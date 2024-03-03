@@ -1,9 +1,7 @@
 "use client"
 import React from 'react';
-import { useRouter } from 'next/navigation'
-
 import { useState } from 'react';
-import ImageCarousel from './slider.js';
+import ImageCarousel from '../Components/slider.js';
 
 
 
