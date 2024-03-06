@@ -24,7 +24,6 @@ const App = () => {
           <div id="about">
             <About />
           </div>
-          <Fetch/>
           <div id="highlights">
             <Highlight />
           </div>

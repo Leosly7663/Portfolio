@@ -2,6 +2,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useRouter } from "next/navigation"
+import Fetch from "../Fetch.js"
 
 
 const Highlight = () => {
@@ -10,16 +11,24 @@ const Highlight = () => {
     const router = useRouter()
   return (
     <div className="w-full justify-center mt-5 pt-60 pb-60 flex flex-col items-center">
-      <div className='bg-black w-full h-20 mb-10'>
-        <p className='text-white'>
-         Full-Stack Weather Display
-        </p>
-      </div>
+      
       
       <h2 className='text-5xl  pb-6 text-white'>
-        My Highlights
+        Highlight Project
+      </h2>
+      <div className='bg-[#01020ede] w-4/5 mb-10 text-white border-gray-700 border rounded-lg pt-8'>
+        <div className='text-2xl text-center '>
+         <p>
+         Full-Stack Weather App
+         </p>
+        </div>
+        <Fetch/>
+      </div>
+      <h2 className='text-5xl  pb-6 text-white'>
+        More Projects
       </h2>
       <div className='bg-[#66666647] w-11/12 flex flex-rw p-5 justify-evenly space-x-5 rounded-xl'>
+        
         <div className="bg-black w-2/5 rounded-xl bg-opacity-95">
             <div className=''>
                 <p className='text-white text-center border-b px-8 pt-4 pb-4 text-7xl font-oswald font-light'>
