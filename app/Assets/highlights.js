@@ -4,14 +4,18 @@ import { useState } from 'react';
 import { useRouter } from "next/navigation"
 
 
-
-
 const Highlight = () => {
     const [isHovered, setIsHovered] = useState(false);
     const [isClick, setIsClick] = useState(false);
     const router = useRouter()
   return (
     <div className="w-full justify-center mt-5 pt-60 pb-60 flex flex-col items-center">
+      <div className='bg-black w-full h-20 mb-10'>
+        <p className='text-white'>
+         Full-Stack Weather Display
+        </p>
+      </div>
+      
       <h2 className='text-5xl  pb-6 text-white'>
         My Highlights
       </h2>

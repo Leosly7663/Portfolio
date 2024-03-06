@@ -3,8 +3,8 @@ import NavBar from './Components/Menu';
 import TitleCard from './Assets/Profile';
 import GradientTransition from "./Assets/backParticleMist";
 import About from "./Assets/aboutMe";
-import Projects from "./Assets/projects"
 import Footer from "./Assets/footer.js"
+import Fetch from "./Fetch.js"
 import Highlight from "./Assets/highlights.js"
 
 const App = () => {
@@ -24,12 +24,9 @@ const App = () => {
           <div id="about">
             <About />
           </div>
+          <Fetch/>
           <div id="highlights">
             <Highlight />
-          </div>
-          <div id="portfolio">
-            {//<Projects/>
-            }
           </div>
           <div id="contact">
             <Footer />

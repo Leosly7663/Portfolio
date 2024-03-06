@@ -28,7 +28,7 @@ const LifeofaServer = () => {
                   />
                   </div>
               </div>
-              {/* UML Section */}
+              {/* UML Section */} 
               <div className="bg-gray-200 p-4 rounded-lg">
                 <h2 className="text-xl font-semibold mb-2">UML Diagram</h2>
                 {/* UML Diagram image or description */}
