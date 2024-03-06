@@ -4,7 +4,7 @@ import TitleCard from './Assets/Profile';
 import GradientTransition from "./Assets/backParticleMist";
 import About from "./Assets/aboutMe";
 import Footer from "./Assets/footer.js"
-import Fetch from "./Fetch.js"
+import Fetch from "./Components/Fetch.js"
 import Highlight from "./Assets/highlights.js"
 
 const App = () => {

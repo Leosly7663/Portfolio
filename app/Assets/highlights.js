@@ -2,7 +2,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useRouter } from "next/navigation"
-import Fetch from "../Fetch.js"
+import Fetch from "../Components/Fetch.js"
 
 
 const Highlight = () => {
