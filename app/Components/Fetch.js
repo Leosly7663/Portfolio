@@ -29,33 +29,36 @@ function Example() {
   };
 
   return (
-    <div className='p-5 flex flex-col'>
-       <div className=' flex flex-row justify-evenly'>
-      
-      {data ? <div><WeatherDisplay weatherData={data} /></div> : <div>No City Selected</div>}
-
-
+    <div >
+      {data ? 
+        <div className='flex flex-col items-center'>
         <Select
-            className='text-black mb-64 w-60'
-            options={options}
-            value={{ value: selectedCity, label: selectedCity }}
-            onChange={handleCityChange}
-            placeholder="Select City"
-            isSearchable
-
-    />
-
-      
-    
-    </div> 
-            <div className='flex justify-evenly text-lg text-gray-400'>
-            <button >
-                See more data
-            </button>
-            <button>
-                Project Page
-            </button>
-            </div>
+          className='text-black w-96'
+          options={options}
+          value={{ value: selectedCity, label: selectedCity }}
+          onChange={handleCityChange}
+          placeholder="Select City"
+          isSearchable
+          />
+        <WeatherDisplay weatherData={data} />
+        </div> 
+        :
+        <div className='flex flex-col items-center'>
+          <Select
+          className='text-black w-96'
+          options={options}
+          value={{ value: selectedCity, label: selectedCity }}
+          onChange={handleCityChange}
+          placeholder="Select City"
+          isSearchable
+          />
+          <div className='pt-5'>
+          <p>
+            Please Select A City From The List Above
+          </p>
+          </div>
+        </div>
+      }
     </div>
     
   );

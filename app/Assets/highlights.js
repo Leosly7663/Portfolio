@@ -13,16 +13,24 @@ const Highlight = () => {
     <div className="w-full justify-center mt-5 pt-60 pb-60 flex flex-col items-center">
       
       
-      <h2 className='text-5xl  pb-6 text-white'>
-        Highlight Project
+      <h2 className='text-5xl  text-white'>
+        Ontario Weather
       </h2>
-      <div className='bg-[#01020ede] w-4/5 mb-10 text-white border-gray-700 border rounded-lg pt-8'>
-        <div className='text-2xl text-center '>
-         <p>
-         Full-Stack Weather App
-         </p>
-        </div>
+      <p className='text-white '>
+        Live data collection, powered through Python Flask and GitHub Actions served 24 hours to React.js client  
+      </p>
+      <div className=' w-full mb-10 text-white rounded-lg pt-8 bg-gradient-to-t from-transparent via-black to-transparent'>
+        <div className="h-96">
         <Fetch/>
+        </div>
+        <div className='flex justify-center space-x-10 text-lg text-gray-400 mb-14'>
+            <button >
+                See more data 
+            </button>
+            <button>
+                Project Page
+            </button>
+            </div>
       </div>
       <h2 className='text-5xl  pb-6 text-white'>
         More Projects
