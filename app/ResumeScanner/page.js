@@ -3,14 +3,25 @@ import React, { useState } from "react";
 
 export default function ResumeScanner() {
   const [file, setFile] = useState(null);
+  const [jdFile, setJdFile] = useState(null);
   const [processing, setProcessing] = useState(false);
   const [parsedData, setParsedData] = useState(null);
+  const [matchResults, setMatchResults] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
-      setParsedData(null); // Reset when uploading a new file
+      setParsedData(null);
+      setMatchResults(null);
+    }
+  };
+
+  const handleJdFileChange = (e) => {
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      setJdFile(selectedFile);
+      setMatchResults(null);
     }
   };
 
@@ -18,7 +29,6 @@ export default function ResumeScanner() {
     if (!file) return;
     setProcessing(true);
 
-    // Simulate parsing after processing
     setTimeout(() => {
       const dummyParsed = {
         contactInformation: {
@@ -70,15 +80,30 @@ export default function ResumeScanner() {
     alert(`Comment on "${section}" clicked! (Replace with your own logic)`);
   };
 
+  const handleMatch = () => {
+    if (!parsedData || !jdFile) {
+      alert("You must upload and process a resume and upload a job description first.");
+      return;
+    }
+
+    // Simulate a match score for each section
+    const simulatedMatch = {};
+    Object.keys(parsedData).forEach((section) => {
+      simulatedMatch[section] = Math.floor(Math.random() * 41) + 60; // 60–100%
+    });
+    setMatchResults(simulatedMatch);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black flex items-center justify-center p-6">
       <div className="bg-white/5 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-3xl w-full border border-white/10 relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
 
         <h1 className="text-3xl font-bold text-white mb-4">Resume Scanner</h1>
-        <p className="text-gray-300 mb-6">Upload your resume, process it, and review parsed data.</p>
+        <p className="text-gray-300 mb-6">Upload your resume, process it, and compare to a job description.</p>
 
-        <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300">
+        {/* Resume Upload */}
+        <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300 mb-4">
           <input
             id="fileUpload"
             type="file"
@@ -99,14 +124,14 @@ export default function ResumeScanner() {
                 <svg className="w-12 h-12 text-white/50" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4h10v12m-5 4v-4m0 0H8m4 0h4" />
                 </svg>
-                <span className="text-white/70">Drag & drop or click to upload</span>
+                <span className="text-white/70">Upload Resume</span>
               </>
             )}
           </label>
         </div>
 
         {file && (
-          <div className="mt-6 space-y-4">
+          <div className="space-y-4 mb-6">
             <button
               onClick={handleProcess}
               disabled={processing}
@@ -132,20 +157,65 @@ export default function ResumeScanner() {
           </div>
         )}
 
+        {/* Job Description Upload */}
+        <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300 mb-6">
+          <input
+            id="jdUpload"
+            type="file"
+            accept=".pdf,.doc,.docx,.txt"
+            onChange={handleJdFileChange}
+            className="hidden"
+          />
+          <label htmlFor="jdUpload" className="cursor-pointer flex flex-col items-center justify-center space-y-2">
+            {jdFile ? (
+              <>
+                <svg className="w-12 h-12 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                </svg>
+                <span className="text-white">{jdFile.name}</span>
+              </>
+            ) : (
+              <>
+                <svg className="w-12 h-12 text-white/50" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4h10v12m-5 4v-4m0 0H8m4 0h4" />
+                </svg>
+                <span className="text-white/70">Upload Job Description</span>
+              </>
+            )}
+          </label>
+        </div>
+
         {parsedData && (
-          <div className="mt-8 bg-black/30 rounded-xl p-4 space-y-4">
+          <button
+            onClick={handleMatch}
+            className="w-full bg-yellow-500 hover:bg-yellow-600 text-black font-semibold py-2 px-4 rounded-lg transition-colors duration-300 mb-6"
+          >
+            Compare to Job Description
+          </button>
+        )}
+
+        {/* Parsed Resume with Match Results */}
+        {parsedData && (
+          <div className="bg-black/30 rounded-xl p-4 space-y-4">
             <h2 className="text-xl text-white font-semibold mb-2">Parsed Resume Data</h2>
 
             {Object.entries(parsedData).map(([section, content]) => (
               <div key={section} className="bg-white/5 p-4 rounded-lg border border-white/10">
                 <div className="flex justify-between items-center mb-2">
                   <h3 className="text-white font-medium capitalize">{section}</h3>
-                  <button
-                    onClick={() => handleComment(section)}
-                    className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
-                  >
-                    Comment
-                  </button>
+                  <div className="flex gap-2">
+                    {matchResults && (
+                      <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
+                        {matchResults[section]}% match
+                      </span>
+                    )}
+                    <button
+                      onClick={() => handleComment(section)}
+                      className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
+                    >
+                      Comment
+                    </button>
+                  </div>
                 </div>
                 <pre className="text-gray-300 text-sm overflow-x-auto whitespace-pre-wrap">
                   {JSON.stringify(content, null, 2)}
