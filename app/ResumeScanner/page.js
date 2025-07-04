@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { extractText, parseResumeSections, computeMatchPercentage } from '../utils/fileparsing.js';
+import { extractText, parseResumeSections, computeMatchPercentage } from '../utils/parseFiles.js';
 
 export default function ResumeScanner() {
   const [file, setFile] = useState(null);
