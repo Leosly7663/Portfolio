@@ -1,5 +1,6 @@
 "use client";
 import React, { useState } from "react";
+import { extractText, parseResumeSections, computeMatchPercentage } from "@/utils/fileParsing.js";
 
 export default function ResumeScanner() {
   const [file, setFile] = useState(null);
@@ -25,47 +26,6 @@ export default function ResumeScanner() {
     }
   };
 
-  const handleProcess = () => {
-    if (!file) return;
-    setProcessing(true);
-
-    setTimeout(() => {
-      const dummyParsed = {
-        contactInformation: {
-          name: "John Doe",
-          email: "johndoe@example.com",
-          phone: "+1 555-123-4567",
-        },
-        summary: "Experienced software developer specializing in frontend technologies.",
-        experience: [
-          {
-            title: "Senior Frontend Developer",
-            company: "Tech Corp",
-            dates: "2019 - Present",
-            description: "Developed modern React applications and led UI design."
-          },
-          {
-            title: "Frontend Developer",
-            company: "Web Solutions",
-            dates: "2016 - 2019",
-            description: "Built responsive websites with JavaScript and CSS."
-          }
-        ],
-        education: [
-          {
-            degree: "B.Sc. in Computer Science",
-            school: "University of Somewhere",
-            year: "2016"
-          }
-        ],
-        skills: ["React", "JavaScript", "HTML", "CSS", "TailwindCSS"]
-      };
-
-      setParsedData(dummyParsed);
-      setProcessing(false);
-    }, 2000);
-  };
-
   const handleDownload = () => {
     if (!file) return;
     const url = URL.createObjectURL(file);
@@ -80,19 +40,31 @@ export default function ResumeScanner() {
     alert(`Comment on "${section}" clicked! (Replace with your own logic)`);
   };
 
-  const handleMatch = () => {
+  const handleProcess = async () => {
+    if (!file) return;
+    setProcessing(true);
+  
+    const resumeText = await extractText(file);
+    const parsedSections = parseResumeSections(resumeText);
+  
+    setParsedData(parsedSections);
+    setProcessing(false);
+  };
+  
+  const handleMatch = async () => {
     if (!parsedData || !jdFile) {
-      alert("You must upload and process a resume and upload a job description first.");
+      alert("Upload and process both files first.");
       return;
     }
-
-    // Simulate a match score for each section
-    const simulatedMatch = {};
-    Object.keys(parsedData).forEach((section) => {
-      simulatedMatch[section] = Math.floor(Math.random() * 41) + 60; // 60–100%
+  
+    const jdText = await extractText(jdFile);
+    const newMatchResults = {};
+    Object.entries(parsedData).forEach(([section, text]) => {
+      newMatchResults[section] = computeMatchPercentage(text, jdText);
     });
-    setMatchResults(simulatedMatch);
+    setMatchResults(newMatchResults);
   };
+  
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black flex items-center justify-center p-6">
