@@ -19,12 +19,8 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-particle-backgrounds": "^1.0.4",
-<<<<<<< HEAD
     "react-router": "^6.22.0",
     "react-router-dom": "^6.22.0",
-=======
-    "react-select": "^5.8.0",
->>>>>>> d8990c05811400de6f7b38435bdb896ca883762b
     "react-slick": "^0.30.1",
     "slick-carousel": "^1.8.1"
   },
