@@ -1,22 +1,57 @@
 "use client";
 import React, { useState } from "react";
 
-const ResumeScanner = () => {
+export default function ResumeScanner() {
   const [file, setFile] = useState(null);
   const [processing, setProcessing] = useState(false);
+  const [parsedData, setParsedData] = useState(null);
 
   const handleFileChange = (e) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       setFile(selectedFile);
+      setParsedData(null); // Reset when uploading a new file
     }
   };
 
   const handleProcess = () => {
     if (!file) return;
     setProcessing(true);
-    // Simulate processing delay
+
+    // Simulate parsing after processing
     setTimeout(() => {
+      const dummyParsed = {
+        contactInformation: {
+          name: "John Doe",
+          email: "johndoe@example.com",
+          phone: "+1 555-123-4567",
+        },
+        summary: "Experienced software developer specializing in frontend technologies.",
+        experience: [
+          {
+            title: "Senior Frontend Developer",
+            company: "Tech Corp",
+            dates: "2019 - Present",
+            description: "Developed modern React applications and led UI design."
+          },
+          {
+            title: "Frontend Developer",
+            company: "Web Solutions",
+            dates: "2016 - 2019",
+            description: "Built responsive websites with JavaScript and CSS."
+          }
+        ],
+        education: [
+          {
+            degree: "B.Sc. in Computer Science",
+            school: "University of Somewhere",
+            year: "2016"
+          }
+        ],
+        skills: ["React", "JavaScript", "HTML", "CSS", "TailwindCSS"]
+      };
+
+      setParsedData(dummyParsed);
       setProcessing(false);
     }, 2000);
   };
@@ -31,12 +66,17 @@ const ResumeScanner = () => {
     URL.revokeObjectURL(url);
   };
 
+  const handleComment = (section) => {
+    alert(`Comment on "${section}" clicked! (Replace with your own logic)`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black flex items-center justify-center p-6">
-      <div className="bg-white/5 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-2xl w-full border border-white/10 relative overflow-hidden">
+      <div className="bg-white/5 backdrop-blur-md rounded-3xl shadow-2xl p-8 max-w-3xl w-full border border-white/10 relative overflow-hidden">
         <div className="absolute -top-16 -right-16 w-64 h-64 bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-500 rounded-full opacity-20 blur-3xl pointer-events-none"></div>
+
         <h1 className="text-3xl font-bold text-white mb-4">Resume Scanner</h1>
-        <p className="text-gray-300 mb-6">Upload your resume to process and re-download it.</p>
+        <p className="text-gray-300 mb-6">Upload your resume, process it, and review parsed data.</p>
 
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300">
           <input
@@ -86,13 +126,35 @@ const ResumeScanner = () => {
                 onClick={handleDownload}
                 className="w-full bg-green-500 hover:bg-green-600 text-white font-semibold py-2 px-4 rounded-lg transition-colors duration-300"
               >
-                Download Resume
+                Download Original Resume
               </button>
             )}
+          </div>
+        )}
+
+        {parsedData && (
+          <div className="mt-8 bg-black/30 rounded-xl p-4 space-y-4">
+            <h2 className="text-xl text-white font-semibold mb-2">Parsed Resume Data</h2>
+
+            {Object.entries(parsedData).map(([section, content]) => (
+              <div key={section} className="bg-white/5 p-4 rounded-lg border border-white/10">
+                <div className="flex justify-between items-center mb-2">
+                  <h3 className="text-white font-medium capitalize">{section}</h3>
+                  <button
+                    onClick={() => handleComment(section)}
+                    className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
+                  >
+                    Comment
+                  </button>
+                </div>
+                <pre className="text-gray-300 text-sm overflow-x-auto whitespace-pre-wrap">
+                  {JSON.stringify(content, null, 2)}
+                </pre>
+              </div>
+            ))}
           </div>
         )}
       </div>
     </div>
   );
 }
-export default ResumeScanner;
