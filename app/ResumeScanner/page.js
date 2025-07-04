@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { extractText, parseResumeSections, computeMatchPercentage } from '../utils/parseFiles.js';
 
+
 export default function ResumeScanner() {
   const [file, setFile] = useState(null);
   const [jdFile, setJdFile] = useState(null);
