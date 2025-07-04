@@ -4,6 +4,7 @@ import { extractText, parseResumeSections, computeMatchPercentage } from '../uti
 
 
 export default function ResumeScanner() {
+  const [jdKeywords, setJdKeywords] = useState(null);
   const [file, setFile] = useState(null);
   const [jdFile, setJdFile] = useState(null);
   const [processing, setProcessing] = useState(false);
@@ -52,6 +53,19 @@ export default function ResumeScanner() {
     setProcessing(false);
   };
   
+  const handleJdKeywordsUpload = async (e) => {
+    const selectedFile = e.target.files[0];
+    if (!selectedFile) return;
+  
+    const text = await selectedFile.text();
+    try {
+      const json = JSON.parse(text);
+      setJdKeywords(json);
+    } catch (err) {
+      alert("Invalid JSON file");
+    }
+  };
+
   const handleMatch = async () => {
     if (!parsedData || !jdFile) {
       alert("Upload and process both files first.");
@@ -59,11 +73,23 @@ export default function ResumeScanner() {
     }
   
     const jdText = await extractText(jdFile);
+  
+    // Example: Simulate JD keywords
+    const simulatedKeywords = {
+      summary: ["team player", "self-motivated"],
+      experience: ["JavaScript", "React", "Node.js"],
+      education: ["Bachelor's Degree"],
+      skills: ["TypeScript", "Agile", "REST APIs"],
+      contactInformation: [],
+    };
+  
     const newMatchResults = {};
     Object.entries(parsedData).forEach(([section, text]) => {
       newMatchResults[section] = computeMatchPercentage(text, jdText);
     });
+  
     setMatchResults(newMatchResults);
+    setJdKeywords(simulatedKeywords);
   };
   
 
@@ -130,7 +156,7 @@ export default function ResumeScanner() {
           </div>
         )}
 
-        {/* Job Description Upload */}
+        {/* Job Description Upload Loose*/}
         <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300 mb-6">
           <input
             id="jdUpload"
@@ -156,7 +182,22 @@ export default function ResumeScanner() {
               </>
             )}
           </label>
-        </div>
+              </div>
+              <div className="border-2 border-dashed border-white/30 rounded-lg p-6 text-center hover:border-white/50 transition-colors duration-300 mb-6">
+        <input
+          id="jdKeywordsUpload"
+          type="file"
+          accept=".json"
+          onChange={handleJdKeywordsUpload}
+          className="hidden"
+        />
+        <label htmlFor="jdKeywordsUpload" className="cursor-pointer flex flex-col items-center justify-center space-y-2">
+          <svg className="w-12 h-12 text-white/50" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M7 16V4h10v12m-5 4v-4m0 0H8m4 0h4" />
+          </svg>
+          <span className="text-white/70">Upload JD Keywords JSON</span>
+        </label>
+      </div>
 
         {parsedData && (
           <button
@@ -174,26 +215,44 @@ export default function ResumeScanner() {
 
             {Object.entries(parsedData).map(([section, content]) => (
               <div key={section} className="bg-white/5 p-4 rounded-lg border border-white/10">
-                <div className="flex justify-between items-center mb-2">
-                  <h3 className="text-white font-medium capitalize">{section}</h3>
-                  <div className="flex gap-2">
-                    {matchResults && (
-                      <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
-                        {matchResults[section]}% match
-                      </span>
-                    )}
-                    <button
-                      onClick={() => handleComment(section)}
-                      className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
-                    >
-                      Comment
-                    </button>
-                  </div>
+              <div className="flex justify-between items-center mb-2">
+                <h3 className="text-white font-medium capitalize">{section}</h3>
+                <div className="flex gap-2">
+                  {matchResults && (
+                    <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
+                      {matchResults[section]}% match
+                    </span>
+                  )}
+                  <button
+                    onClick={() => handleComment(section)}
+                    className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
+                  >
+                    Comment
+                  </button>
                 </div>
-                <pre className="text-gray-300 text-sm overflow-x-auto whitespace-pre-wrap">
-                  {JSON.stringify(content, null, 2)}
-                </pre>
               </div>
+            
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <h4 className="text-sm text-gray-400 mb-1">Resume Content</h4>
+                  <pre className="text-gray-300 text-sm overflow-x-auto whitespace-pre-wrap">
+                    {JSON.stringify(content, null, 2)}
+                  </pre>
+                </div>
+                <div>
+                  <h4 className="text-sm text-gray-400 mb-1">Job Description Keywords</h4>
+                  {jdKeywords && jdKeywords[section] && jdKeywords[section].length > 0 ? (
+                    <ul className="list-disc list-inside text-gray-300 text-sm space-y-1">
+                      {jdKeywords[section].map((keyword, idx) => (
+                        <li key={idx}>{keyword}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-gray-500 italic text-sm">No keywords provided for this section.</p>
+                  )}
+                </div>
+              </div>
+            </div>
             ))}
           </div>
         )}
