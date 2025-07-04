@@ -16,8 +16,6 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-particle-backgrounds": "^1.0.4",
-    "react-select": "^5.8.0",
-    "next.js": "^1.0.3",
     "react-router": "^6.22.0",
     "react-router-dom": "^6.22.0",
     "react-slick": "^0.30.1",
