@@ -48,7 +48,18 @@ const Highlight = () => {
                     </p>
                 </div>
             </div>
-        </div>
+        </div> 
+        <div className="bg-black w-2/5 rounded-xl bg-opacity-95">
+            <div className=''>
+                <p className='text-white text-center border-b px-8 pt-4 pb-4 text-7xl font-oswald font-light'>
+                    Resume Project
+                </p>
+                <div className='flex justify-center'>
+                    <p className=' p-2 btn rounded-md  my-4' onClick={() => router.push('/ResumeScanner')}>
+                        View Project
+                    </p>
+                </div>
+            </div>
         <div className="bg-black w-2/5 rounded-xl bg-opacity-95">
             <div className=''>
                 <p className='text-white text-center border-b px-8 pt-4 pb-4 text-7xl font-oswald font-light'>
