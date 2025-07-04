@@ -1,4 +1,4 @@
-"use client";
+"use client"
 import React, { useState } from "react";
 import { extractText, parseResumeSections, computeMatchPercentage } from '../utils/parseFiles.js';
 
