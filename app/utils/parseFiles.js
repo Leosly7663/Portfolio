@@ -1,10 +1,7 @@
-"use client"
-import * as pdfjsLib from "pdfjs-dist/build/pdf";
-import mammoth from "mammoth";
-
-pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
-
 export async function extractTextFromPDF(file) {
+  const pdfjsLib = await import("pdfjs-dist/build/pdf");
+  pdfjsLib.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjsLib.version}/pdf.worker.min.js`;
+
   const arrayBuffer = await file.arrayBuffer();
   const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
   let text = "";
@@ -18,6 +15,7 @@ export async function extractTextFromPDF(file) {
 }
 
 export async function extractTextFromDocx(file) {
+  const mammoth = await import("mammoth");
   const arrayBuffer = await file.arrayBuffer();
   const result = await mammoth.extractRawText({ arrayBuffer });
   return result.value;
@@ -29,31 +27,30 @@ export async function extractText(file) {
   } else if (file.name.endsWith(".docx")) {
     return await extractTextFromDocx(file);
   } else {
-    // fallback for plain text
     return await file.text();
   }
 }
-export function computeMatchPercentage(sectionText, jdText) {
-    if (!sectionText || !jdText) return 0;
-    const sectionWords = new Set(sectionText.toLowerCase().split(/\W+/).filter(w => w));
-    const jdWords = new Set(jdText.toLowerCase().split(/\W+/).filter(w => w));
-  
-    let overlap = 0;
-    sectionWords.forEach(word => {
-      if (jdWords.has(word)) overlap++;
-    });
-  
-    return Math.round((overlap / sectionWords.size) * 100);
-  }
 
-  export function parseResumeSections(text) {
-    // This is a naive example splitting by headers
-    const sections = {
-      contactInformation: text.match(/Name:.+\nEmail:.+\nPhone:.+/i)?.[0] || "",
-      summary: (text.match(/Summary([\s\S]*?)(Experience|Education|Skills)/i) || [])[1]?.trim() || "",
-      experience: (text.match(/Experience([\s\S]*?)(Education|Skills)/i) || [])[1]?.trim() || "",
-      education: (text.match(/Education([\s\S]*?)(Skills|$)/i) || [])[1]?.trim() || "",
-      skills: (text.match(/Skills([\s\S]*)/i) || [])[1]?.trim() || "",
-    };
-    return sections;
-  }
+export function computeMatchPercentage(sectionText, jdText) {
+  if (!sectionText || !jdText) return 0;
+  const sectionWords = new Set(sectionText.toLowerCase().split(/\W+/).filter(w => w));
+  const jdWords = new Set(jdText.toLowerCase().split(/\W+/).filter(w => w));
+
+  let overlap = 0;
+  sectionWords.forEach(word => {
+    if (jdWords.has(word)) overlap++;
+  });
+
+  return Math.round((overlap / sectionWords.size) * 100);
+}
+
+export function parseResumeSections(text) {
+  const sections = {
+    contactInformation: text.match(/Name:.+\nEmail:.+\nPhone:.+/i)?.[0] || "",
+    summary: (text.match(/Summary([\s\S]*?)(Experience|Education|Skills)/i) || [])[1]?.trim() || "",
+    experience: (text.match(/Experience([\s\S]*?)(Education|Skills)/i) || [])[1]?.trim() || "",
+    education: (text.match(/Education([\s\S]*?)(Skills|$)/i) || [])[1]?.trim() || "",
+    skills: (text.match(/Skills([\s\S]*)/i) || [])[1]?.trim() || "",
+  };
+  return sections;
+}
