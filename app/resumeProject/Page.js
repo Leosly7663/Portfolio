@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-export default function ResumeScanner() {
+const ResumeScanner = () => {
   const [file, setFile] = useState(null);
   const [processing, setProcessing] = useState(false);
 
@@ -95,3 +95,4 @@ export default function ResumeScanner() {
     </div>
   );
 }
+export default ResumeScanner;
