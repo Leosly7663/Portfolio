@@ -1,35 +1,8 @@
-"use client";
-import React, { useState } from "react";
-
-const ResumeScanner = () => {
-  const [file, setFile] = useState(null);
-  const [processing, setProcessing] = useState(false);
-
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
-    if (selectedFile) {
-      setFile(selectedFile);
-    }
-  };
-
-  const handleProcess = () => {
-    if (!file) return;
-    setProcessing(true);
-    // Simulate processing delay
-    setTimeout(() => {
-      setProcessing(false);
-    }, 2000);
-  };
-
-  const handleDownload = () => {
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = file.name;
-    link.click();
-    URL.revokeObjectURL(url);
-  };
+"use client"
+import React from 'react';
+import NavBar from '../Components/Menu';
+import Image from 'next/image'
+import { useRouter } from 'next/navigation';
 
 const LifeofaServer = () => {
   const router = useRouter()
