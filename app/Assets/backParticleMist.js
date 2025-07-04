@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react';
 import ParticleBackground from 'react-particle-backgrounds'
 
-const GradientTransition = function() {
+const GradientTransition = function () {
 
   const settings = {
     canvas: {
@@ -27,7 +27,7 @@ const GradientTransition = function() {
   }
 
   return (
-    <ParticleBackground settings={settings}/>
+    <ParticleBackground settings={settings} />
   )
 }
-  export default GradientTransition;
+export default GradientTransition;
