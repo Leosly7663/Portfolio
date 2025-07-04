@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Select from 'react-select';
-import WeatherDisplay from '../Assets/resumeProject.js'; // Assuming this file exists
+import WeatherDisplay from '../Assets/weatherData.js'; // Assuming this file exists
 
 function Example() {
   const [data, setData] = useState(null);
