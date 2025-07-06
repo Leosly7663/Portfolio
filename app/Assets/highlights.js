@@ -74,6 +74,7 @@ const Highlight = () => {
           </div>
       </div>
     </div>
+    </div>
   );
 };
 
