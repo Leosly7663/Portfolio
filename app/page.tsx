@@ -1,8 +1,10 @@
 "use client"
 import NavBar from './Components/Menu';
 import TitleCard from './Assets/Profile';
+import About from "./Assets/about"
 import GradientTransition from "./Assets/backParticleMist";
-import About from "./Assets/about.js";
+import ExperienceTimeline from "./Assets/experienceTimeline";
+import Projects from "./Assets/projects"
 import Footer from "./Assets/footer.js"
 import Fetch from "./Components/Fetch.js"
 import Highlight from "./Assets/highlights.js"
@@ -26,6 +28,12 @@ const App = () => {
           </div>
           <div id="highlights">
             <Highlight />
+          </div>
+           <div id="highlights">
+            <ExperienceTimeline />
+          </div>
+           <div id="highlights">
+            <Projects />
           </div>
           <div id="contact">
             <Footer />
