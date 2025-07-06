@@ -43,7 +43,7 @@ export default function ResumeScanner() {
         .map((s) => s.trim())
         .filter(Boolean);
 
-      const response = await fetch("http://api.leonardonigro.com/combine-match", {
+      const response = await fetch("https://api.leonardonigro.com/combine-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
