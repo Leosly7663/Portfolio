@@ -67,31 +67,42 @@ export default function ResumeScanner() {
   };
 
   const handleMatch = async () => {
-    if (!parsedData || !jdFile) {
-      alert("Upload and process both files first.");
-      return;
-    }
-  
-    const jdText = await extractText(jdFile);
-  
-    // Example: Simulate JD keywords
-    const simulatedKeywords = {
-      summary: ["team player", "self-motivated"],
-      experience: ["JavaScript", "React", "Node.js"],
-      education: ["Bachelor's Degree"],
-      skills: ["TypeScript", "Agile", "REST APIs"],
-      contactInformation: [],
-    };
-  
-    const newMatchResults = {};
-    Object.entries(parsedData).forEach(([section, text]) => {
-      newMatchResults[section] = computeMatchPercentage(text, jdText);
+  if (!file || !jdFile) {
+    alert("Upload both files first.");
+    return;
+  }
+
+  setProcessing(true);
+
+  const resumeText = await extractText(file);
+  const jdText = await extractText(jdFile);
+
+  // Split JD into sentences for comparison
+  const jdSentences = jdText.split(/[.\n]+/).map(s => s.trim()).filter(Boolean);
+
+  try {
+    const response = await fetch("http://api.leonardonigro.com/combine-match", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        resume: resumeText,
+        jobSentences: jdSentences
+      })
     });
-  
-    setMatchResults(newMatchResults);
-    setJdKeywords(simulatedKeywords);
-  };
-  
+
+    if (!response.ok) {
+      throw new Error("Error from server");
+    }
+
+    const result = await response.json();
+    setMatchResults(result);
+  } catch (err) {
+    console.error(err);
+    alert("Error processing match");
+  } finally {
+    setProcessing(false);
+  }
+};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-900 via-indigo-900 to-black flex items-center justify-center p-6">
@@ -209,50 +220,19 @@ export default function ResumeScanner() {
         )}
 
         {/* Parsed Resume with Match Results */}
-        {parsedData && (
-          <div className="bg-black/30 rounded-xl p-4 space-y-4">
-            <h2 className="text-xl text-white font-semibold mb-2">Parsed Resume Data</h2>
-
-            {Object.entries(parsedData).map(([section, content]) => (
-              <div key={section} className="bg-white/5 p-4 rounded-lg border border-white/10">
-              <div className="flex justify-between items-center mb-2">
-                <h3 className="text-white font-medium capitalize">{section}</h3>
-                <div className="flex gap-2">
-                  {matchResults && (
-                    <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
-                      {matchResults[section]}% match
-                    </span>
-                  )}
-                  <button
-                    onClick={() => handleComment(section)}
-                    className="text-sm bg-indigo-500 hover:bg-indigo-600 text-white px-2 py-1 rounded"
-                  >
-                    Comment
-                  </button>
-                </div>
+        {matchResults && (
+          <div className="bg-black/30 rounded-xl p-4 space-y-4 mt-6">
+            <h2 className="text-xl text-white font-semibold mb-2">Matching Results</h2>
+            {matchResults.map((item, idx) => (
+              <div key={idx} className="bg-white/5 p-4 rounded-lg border border-white/10">
+                <h3 className="text-white font-medium">Job Requirement:</h3>
+                <p className="text-gray-300 mb-2">{item.jobSentence}</p>
+                <h3 className="text-white font-medium">Best Matching Resume Sentence:</h3>
+                <p className="text-gray-300 mb-2">{item.bestMatchSentence}</p>
+                <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
+                  {item.similarityPercent}% similarity
+                </span>
               </div>
-            
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                  <h4 className="text-sm text-gray-400 mb-1">Resume Content</h4>
-                  <pre className="text-gray-300 text-sm overflow-x-auto whitespace-pre-wrap">
-                    {JSON.stringify(content, null, 2)}
-                  </pre>
-                </div>
-                <div>
-                  <h4 className="text-sm text-gray-400 mb-1">Job Description Keywords</h4>
-                  {jdKeywords && jdKeywords[section] && jdKeywords[section].length > 0 ? (
-                    <ul className="list-disc list-inside text-gray-300 text-sm space-y-1">
-                      {jdKeywords[section].map((keyword, idx) => (
-                        <li key={idx}>{keyword}</li>
-                      ))}
-                    </ul>
-                  ) : (
-                    <p className="text-gray-500 italic text-sm">No keywords provided for this section.</p>
-                  )}
-                </div>
-              </div>
-            </div>
             ))}
           </div>
         )}

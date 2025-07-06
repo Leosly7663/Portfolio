@@ -44,7 +44,8 @@ export function computeMatchPercentage(sectionText, jdText) {
 
   return Math.round((overlap / sectionWords.size) * 100);
 }
-
+/*
+ ---- Removed for new ML process
 export function parseResumeSections(text) {
   const sections = {
     contactInformation: text.match(/Name:.+\nEmail:.+\nPhone:.+/i)?.[0] || "",
@@ -55,3 +56,4 @@ export function parseResumeSections(text) {
   };
   return sections;
 }
+*/
