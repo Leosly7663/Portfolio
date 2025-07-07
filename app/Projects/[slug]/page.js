@@ -1,5 +1,5 @@
-import ProjectTemplate from "../Components/ProjectTemplate";
-import projectsData from '@/data/projects';
+import ProjectTemplate from "../../Components/ProjectTemplate";
+import projectsData from '../../Data/Projects';
 
 export async function generateStaticParams() {
   return projectsData.map((p) => ({
