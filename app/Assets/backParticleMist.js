@@ -19,6 +19,10 @@ const GradientTransition = () => {
   }, [engine]);
 
   const particlesOptions = {
+    fullScreen: {
+      enable: true,
+      zIndex: -1,
+    },
     background: {
       color: {
         value: "#0d47a1",
