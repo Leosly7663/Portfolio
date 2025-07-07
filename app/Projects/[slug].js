@@ -1,24 +1,17 @@
 import { useRouter } from "next/router";
-import projects from "../Data/Projects";
 import ProjectTemplate from "../Components/ProjectTemplate";
+import projectsData from '../../data/projects';
 
 export async function getStaticPaths() {
-  const paths = projects.map((project) => ({
-    params: { slug: project.slug },
-  }));
-
+  const paths = projectsData.map((p) => ({ params: { slug: p.slug } }));
   return { paths, fallback: false };
 }
 
 export async function getStaticProps({ params }) {
-  const project = projects.find((p) => p.slug === params.slug);
-
-  return {
-    props: {
-      project,
-    },
-  };
+  const project = projectsData.find((p) => p.slug === params.slug);
+  return { props: { project } };
 }
+
 
 export default function ProjectPage({ project }) {
   const router = useRouter();
