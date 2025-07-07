@@ -27,14 +27,12 @@ const App = () => {
             <About />
           </div>
           <div id="highlights">
-            <Highlight />
+            <Projects />
           </div>
            <div id="highlights">
             <ExperienceTimeline />
           </div>
-           <div id="highlights">
-            <Projects />
-          </div>
+           
           <div id="contact">
             <Footer />
           </div>

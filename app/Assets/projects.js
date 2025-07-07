@@ -31,8 +31,8 @@ const projectsData = [
     ]
   },
   {
-    slug: "node-api",
-    title: "Node.js API",
+    slug: "Flask-Sentence-Embeddings-API",
+    title: "Sentence Embeddings Generation Comparison API",
     description: "RESTful API developed with Node.js and Express, featuring JWT authentication and MongoDB integration.",
     tech: [
       {
@@ -45,8 +45,8 @@ const projectsData = [
     ]
   },
   {
-    slug: "nextjs-blog",
-    title: "Next.js Blog",
+    slug: "Weather-GC-App",
+    title: "Weather GC App",
     description: "A statically generated blog using Next.js with Markdown support and dynamic routing.",
     tech: [
       {
