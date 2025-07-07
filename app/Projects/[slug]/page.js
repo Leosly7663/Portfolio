@@ -1,3 +1,4 @@
+"use client"
 import { useRouter } from 'next/navigation';
 import ProjectTemplate from "../Components/ProjectTemplate";
 import projectsData from '@/data/projects';
