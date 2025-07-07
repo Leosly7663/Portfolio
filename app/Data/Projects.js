@@ -4,7 +4,21 @@ const projectsData = [
     title: "This Portfolio",
     date: "2025-06",
     description: "An interactive dashboard built with React and Chart.js for visualizing business metrics.",
-    content: `This portfolio was built with a strong focus on clarity and interactive design. It features statically generated content, responsive layouts, and reusable component architecture.`,
+    content: `
+## Overview
+
+This portfolio was built with a strong focus on **clarity** and **interactive design**.  
+It features:
+
+- ✅ Statically generated content
+- 🎯 Reusable component architecture
+- 📱 Responsive layouts
+
+### Tech Highlights
+
+- Built using **Next.js** and **Tailwind CSS**
+- Hosted on **Vercel** with CI/CD integration
+    `,
     tech: [
       {
         title: "Front-End",
@@ -32,7 +46,22 @@ const projectsData = [
     title: "Sentence Embeddings Generation Comparison API",
     date: "2025-07",
     description: "A lightweight Flask API that compares similarity scores between input text and PDFs using sentence-transformer embeddings.",
-    content: `This RESTful API accepts keyword queries and PDF text content, processes embeddings using various models, and returns match percentages. Deployed via Docker.`,
+    content: `
+## Overview
+
+This RESTful API accepts:
+
+- 🔤 Keyword queries
+- 📄 PDF text content
+
+It returns **semantic match percentages** using **sentence-transformer embeddings**.
+
+### Deployment
+
+- 🐍 Flask back end
+- 🐳 Dockerized for deployment
+- 🧪 Tested with various transformer models
+    `,
     tech: [
       {
         title: "Back-End",
@@ -49,7 +78,19 @@ const projectsData = [
     title: "Weather GC App",
     date: "2024-12",
     description: "A government weather visualization dashboard built with Next.js and Tailwind.",
-    content: `Integrated data sources from Environment Canada and provided responsive UI views with performance in mind. Statically deployed to the cloud.`,
+    content: `
+## Overview
+
+A responsive dashboard for **visualizing Environment Canada data**.
+
+### Features
+
+- 📡 Real-time weather info
+- 🌤️ Multiple views per department
+- 📦 Statically deployed via **Next.js**
+
+> Built with performance and accessibility in mind.
+    `,
     tech: [
       {
         title: "Front-End",
@@ -65,7 +106,23 @@ const projectsData = [
     title: "Tailwind UI Kit",
     date: "2025-01",
     description: "A collection of reusable UI components styled with Tailwind CSS for rapid development.",
-    content: `Built to speed up prototyping and to serve as a base layer for future projects. Focuses on accessibility, mobile-first design, and consistency.`,
+    content: `
+## Purpose
+
+Created to **speed up prototyping** and enforce a **consistent UI system**.
+
+### Includes
+
+- 📐 Button and form systems
+- 📦 Cards, modals, tabs
+- 🎨 Mobile-first responsive grid
+
+### Principles
+
+- Accessibility-first
+- Clean Tailwind-based structure
+- Developer-focused documentation
+    `,
     tech: [
       {
         title: "Front-End",
@@ -76,4 +133,5 @@ const projectsData = [
     ]
   }
 ];
+
 export default projectsData;
