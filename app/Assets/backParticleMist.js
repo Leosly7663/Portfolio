@@ -2,7 +2,7 @@
 
 import React from "react";
 import Particles from "@tsparticles/react";
-import { loadFull } from "@tsparticles/react";
+import { loadFull } from "tsparticles";
 
 const GradientTransition = () => {
   const particlesInit = async (main) => {
