@@ -1,4 +1,4 @@
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation';
 import ProjectTemplate from "../Components/ProjectTemplate";
 import projectsData from '@/data/projects';
 
@@ -9,6 +9,7 @@ export async function generateStaticParams() {
 }
 
 export default function ProjectPage({ params }) {
+    
   const project = projectsData.find((p) => p.slug === params.slug);
 
   if (!project) return <div>Not found</div>;
@@ -16,10 +17,4 @@ export default function ProjectPage({ params }) {
   return <ProjectTemplate {...project} />;
 }
 
-export default function ProjectPage({ project }) {
-  const router = useRouter();
 
-  if (!project) return <div>Not found</div>;
-
-  return <ProjectTemplate {...project} />;
-}
