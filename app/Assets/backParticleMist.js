@@ -1,64 +1,96 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Particles from "@tsparticles/react";
 import { loadSlim } from "@tsparticles/slim";
 
 const GradientTransition = () => {
-  const particlesInit = async (main) => {
-    // Loads tsparticles engine with all features
-    await loadSlim(main);
-  };
+  const [isReady, setIsReady] = useState(false);
+  const [engine, setEngine] = useState(null);
+
+  useEffect(() => {
+    const initParticles = async () => {
+      if (engine) return; // prevent reloading
+      const loadedEngine = await loadSlim();
+      setEngine(() => loadedEngine);
+      setIsReady(true);
+    };
+    initParticles();
+  }, [engine]);
 
   const particlesOptions = {
-    fullScreen: { enable: true },
     background: {
-      color: { value: "transparent" },
+      color: {
+        value: "#0d47a1",
+      },
+    },
+    fpsLimit: 120,
+    interactivity: {
+      events: {
+        onClick: {
+          enable: true,
+          mode: "push",
+        },
+        onHover: {
+          enable: true,
+          mode: "repulse",
+        },
+        resize: true,
+      },
+      modes: {
+        push: {
+          quantity: 4,
+        },
+        repulse: {
+          distance: 200,
+          duration: 0.4,
+        },
+      },
     },
     particles: {
+      color: {
+        value: "#ffffff",
+      },
+      links: {
+        color: "#ffffff",
+        distance: 150,
+        enable: true,
+        opacity: 0.5,
+        width: 1,
+      },
+      move: {
+        direction: "none",
+        enable: true,
+        outModes: {
+          default: "bounce",
+        },
+        random: false,
+        speed: 6,
+        straight: false,
+      },
       number: {
-        value: 450,
         density: {
           enable: true,
           area: 800,
         },
+        value: 80,
       },
-      color: {
-        value: "#bbbbbb",
+      opacity: {
+        value: 0.5,
       },
       shape: {
         type: "circle",
       },
-      opacity: {
-        value: { min: 0.1, max: 0.7 },
-        animation: {
-          enable: true,
-          speed: 0.5,
-          minimumValue: 0,
-          sync: false,
-        },
-      },
       size: {
-        value: { min: 1, max: 3 },
-        animation: {
-          enable: false,
-        },
-      },
-      move: {
-        enable: true,
-        speed: { min: 0.1, max: 0.4 },
-        direction: "none",
-        random: true,
-        straight: false,
-        outModes: {
-          default: "out",
-        },
+        value: { min: 1, max: 5 },
       },
     },
     detectRetina: true,
   };
 
-  return <Particles id="tsparticles" init={particlesInit} options={particlesOptions} />;
+  return isReady && engine ? (
+    <Particles id="tsparticles" init={engine} options={particlesOptions} />
+  ) : null;
 };
 
 export default GradientTransition;
