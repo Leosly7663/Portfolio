@@ -2,12 +2,12 @@
 
 import React from "react";
 import Particles from "@tsparticles/react";
-import { loadFull } from "tsparticles";
+import { loadSlim } from "@tsparticles/slim";
 
 const GradientTransition = () => {
   const particlesInit = async (main) => {
     // Loads tsparticles engine with all features
-    await loadFull(main);
+    await loadSlim(main);
   };
 
   const particlesOptions = {
