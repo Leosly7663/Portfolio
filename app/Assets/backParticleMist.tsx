@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 type StarFieldConfig = {
   numStars?: number;
@@ -36,42 +36,43 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
   colorWeights = [1],
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const scrollY = useRef<number>(window.scrollY);
   const stars = useRef<Star[]>([]);
-  const canvasSize = useRef<{ width: number; height: number }>({
-  width: window.innerWidth, // ❌ SSR will crash here
-  height: window.innerHeight,
-});
-
-  const generateStars = (width: number, height: number) => {
-    return Array.from({ length: numStars }, () => ({
-      baseX: Math.random() * width,
-      baseY: Math.random() * height,
-      r: Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0],
-      color: getWeightedRandomColor(colorPalette, colorWeights),
-    }));
-  };
+  const [ready, setReady] = useState(false); // Client-side check
 
   useEffect(() => {
-    if (typeof window === "undefined") return null;
+    if (typeof window === "undefined") return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
+
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-    canvasSize.current = { width, height };
-    stars.current = generateStars(width, height);
+    const generateStars = (width: number, height: number): Star[] =>
+      Array.from({ length: numStars }, () => ({
+        baseX: Math.random() * width,
+        baseY: Math.random() * height,
+        r: Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0],
+        color: getWeightedRandomColor(colorPalette, colorWeights),
+      }));
+
+    const resizeCanvas = () => {
+      const width = (canvas.width = window.innerWidth);
+      const height = (canvas.height = window.innerHeight);
+      stars.current = generateStars(width, height);
+    };
 
     const drawStars = () => {
+      if (!canvas) return;
+      const width = canvas.width;
+      const height = canvas.height;
+      const scrollY = window.scrollY;
+
       ctx.clearRect(0, 0, width, height);
-      const scrollOffset = window.scrollY;
-      scrollY.current = scrollOffset;
 
       for (const star of stars.current) {
-        const x = star.baseX + scrollOffset * parallaxFactor * 0.002 * (star.baseX - width / 2);
-        const y = star.baseY + scrollOffset * parallaxFactor * 0.002 * (star.baseY - height / 2);
+        const x = star.baseX + scrollY * parallaxFactor * 0.002 * (star.baseX - width / 2);
+        const y = star.baseY + scrollY * parallaxFactor * 0.002 * (star.baseY - height / 2);
 
         ctx.beginPath();
         ctx.fillStyle = star.color;
@@ -85,23 +86,24 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
       requestAnimationFrame(animate);
     };
 
-    const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      canvasSize.current = { width, height };
-      stars.current = generateStars(width, height);
-    };
-
-    window.addEventListener("resize", handleResize);
-    window.addEventListener("scroll", drawStars, { passive: true });
-
+    resizeCanvas(); // initial draw
     animate();
 
+    window.addEventListener("resize", resizeCanvas);
+    window.addEventListener("scroll", drawStars, { passive: true });
+
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("scroll", drawStars);
     };
   }, [numStars, sizeRange, parallaxFactor, colorPalette, colorWeights]);
+
+  // Ensure rendering only happens on the client
+  useEffect(() => {
+    setReady(true);
+  }, []);
+
+  if (!ready) return null;
 
   return (
     <canvas
