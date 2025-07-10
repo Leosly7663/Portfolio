@@ -25,7 +25,7 @@ const getWeightedRandomColor = (palette: string[], weights: number[]): string =>
     acc += weights[i];
     if (rand <= acc) return palette[i];
   }
-  return palette[palette.length - 1]; // fallback
+  return palette[palette.length - 1];
 };
 
 const StarFieldBackground: React.FC<StarFieldConfig> = ({
@@ -37,10 +37,16 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
 }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stars = useRef<Star[]>([]);
-  const [ready, setReady] = useState(false); // Client-side check
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
+
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
 
     const canvas = canvasRef.current;
     if (!canvas) return;
@@ -63,12 +69,18 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
     };
 
     const drawStars = () => {
-      if (!canvas) return;
+      if (!canvas || !ctx) return;
+
       const width = canvas.width;
       const height = canvas.height;
       const scrollY = window.scrollY;
 
       ctx.clearRect(0, 0, width, height);
+
+      if (stars.current.length === 0) {
+        console.warn("No stars to draw");
+        return;
+      }
 
       for (const star of stars.current) {
         const x = star.baseX + scrollY * parallaxFactor * 0.002 * (star.baseX - width / 2);
@@ -86,8 +98,8 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
       requestAnimationFrame(animate);
     };
 
-    resizeCanvas(); // initial draw
-    animate();
+    resizeCanvas(); // on first mount
+    animate();      // begin animation
 
     window.addEventListener("resize", resizeCanvas);
     window.addEventListener("scroll", drawStars, { passive: true });
@@ -96,18 +108,15 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
       window.removeEventListener("resize", resizeCanvas);
       window.removeEventListener("scroll", drawStars);
     };
-  }, [numStars, sizeRange, parallaxFactor, colorPalette, colorWeights]);
+  }, [mounted, numStars, sizeRange, parallaxFactor, colorPalette, colorWeights]);
 
-  // Ensure rendering only happens on the client
-  useEffect(() => {
-    setReady(true);
-  }, []);
-
-  if (!ready) return null;
+  if (!mounted) return null;
 
   return (
     <canvas
       ref={canvasRef}
+      width={0}
+      height={0}
       style={{
         position: "fixed",
         top: 0,
