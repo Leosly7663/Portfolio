@@ -53,6 +53,7 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
   };
 
   useEffect(() => {
+    if (typeof window === "undefined") return null;
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
