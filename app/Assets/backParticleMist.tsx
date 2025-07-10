@@ -39,9 +39,9 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
   const scrollY = useRef<number>(window.scrollY);
   const stars = useRef<Star[]>([]);
   const canvasSize = useRef<{ width: number; height: number }>({
-    width: window.innerWidth,
-    height: window.innerHeight,
-  });
+  width: window.innerWidth, // ❌ SSR will crash here
+  height: window.innerHeight,
+});
 
   const generateStars = (width: number, height: number) => {
     return Array.from({ length: numStars }, () => ({
