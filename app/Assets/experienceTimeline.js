@@ -3,19 +3,19 @@ import Image from 'next/image';
 
 const experiencesData = [
   {
-    photo: 'canada-flag.svg',
+    photo: 'Can-Gov.ico',
     title: 'Software Developer Co-op',
     mainText: 'Sole developer of a department-wide Photo Contest portal and co-led a Conflict of Interest Declaration System for over 100,000 users. Managed full SDLC, led Agile sprint planning, and implemented Microsoft Entra ID for secure role-based access.',
     date: 'June 2024 – June 2025',
   },
   {
-    photo: 'aws-icon.svg',
+    photo: 'aws-icon.ico',
     title: 'Student Software Developer',
     mainText: 'Worked on an E-Commerce platform using AWS EC2/RDS and a monolithic architecture. Built scalable React components with TypeScript and maintained CI workflows through GitHub project tracking.',
     date: 'April 2023 – Dec 2023',
   },
   {
-    photo: 'tutorax-logo.svg',
+    photo: 'tutorax.ico',
     title: 'Tutor (Contractor) – Tutorax',
     mainText: 'Delivered one-on-one tutoring sessions for Grade 11 and 12 students in Physics, Mathematics, and Computer Science. Adapted complex concepts into accessible lessons, fostering academic success and confidence in STEM subjects.',
     date: '2022 – 2024',
@@ -25,7 +25,7 @@ const experiencesData = [
 const ExperienceItem = ({ photo, title, mainText, date }) => (
   <div className="flex items-start space-x-4 py-4 border-b border-gray-700">
     <Image
-      src={`/library/${photo}`}
+      src={"../public/${photo}"}
       width={60}
       height={60}
       alt={title}
