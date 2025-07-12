@@ -27,7 +27,7 @@ const experiencesData = [
 const ExperienceItem = ({ photo, title, mainText, date }) => (
   <div className="flex items-start space-x-4 py-4 border-b border-gray-700">
     <Image
-      src={"@/public/${photo}"}
+      src={photo}
       width={60}
       height={60}
       alt={title}
