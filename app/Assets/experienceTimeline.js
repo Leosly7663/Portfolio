@@ -3,34 +3,22 @@ import Image from 'next/image';
 
 const experiencesData = [
   {
-    photo: 'react-2.svg',
-    title: 'React Developer',
-    mainText: 'Built dynamic front-end interfaces using React and Tailwind CSS, focusing on responsive design and user experience.',
-    date: '2019 – 2021',
+    photo: 'canada-flag.svg',
+    title: 'Software Developer Co-op',
+    mainText: 'Sole developer of a department-wide Photo Contest portal and co-led a Conflict of Interest Declaration System for over 100,000 users. Managed full SDLC, led Agile sprint planning, and implemented Microsoft Entra ID for secure role-based access.',
+    date: 'June 2024 – June 2025',
   },
   {
-    photo: 'nodejs-icon.svg',
-    title: 'Backend Engineer',
-    mainText: 'Developed RESTful APIs and microservices in Node.js, integrating with enterprise systems and ensuring scalability.',
-    date: '2021 – 2022',
+    photo: 'aws-icon.svg',
+    title: 'Student Software Developer',
+    mainText: 'Worked on an E-Commerce platform using AWS EC2/RDS and a monolithic architecture. Built scalable React components with TypeScript and maintained CI workflows through GitHub project tracking.',
+    date: 'April 2023 – Dec 2023',
   },
   {
-    photo: 'next-js.svg',
-    title: 'Full-Stack Developer',
-    mainText: 'Created server-side rendered applications with Next.js, enhancing performance and SEO for high-traffic platforms.',
-    date: '2022 – 2023',
-  },
-  {
-    photo: 'Vercel_favicon.svg',
-    title: 'Deployment Specialist',
-    mainText: 'Led deployment pipelines with Vercel, automating CI/CD workflows to streamline release cycles.',
-    date: '2023',
-  },
-  {
-    photo: 'tailwind-css-2.svg',
-    title: 'UI/UX Designer',
-    mainText: 'Designed and implemented clean, modern user interfaces leveraging Tailwind CSS and component-driven architecture.',
-    date: '2023 – Present',
+    photo: 'tutorax-logo.svg',
+    title: 'Tutor (Contractor) – Tutorax',
+    mainText: 'Delivered one-on-one tutoring sessions for Grade 11 and 12 students in Physics, Mathematics, and Computer Science. Adapted complex concepts into accessible lessons, fostering academic success and confidence in STEM subjects.',
+    date: '2022 – 2024',
   },
 ];
 
