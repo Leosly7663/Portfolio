@@ -1,6 +1,8 @@
 import React from 'react';
 import Image from 'next/image';
 
+
+
 const experiencesData = [
   {
     photo: 'Can-Gov.ico',
@@ -25,7 +27,7 @@ const experiencesData = [
 const ExperienceItem = ({ photo, title, mainText, date }) => (
   <div className="flex items-start space-x-4 py-4 border-b border-gray-700">
     <Image
-      src={"../public/${photo}"}
+      src={"@/public/${photo}"}
       width={60}
       height={60}
       alt={title}
