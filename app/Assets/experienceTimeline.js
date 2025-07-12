@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 const experiencesData = [
   {
-    photo: 'Can-Gov.ico',
+    photo: 'Gov-can.ico',
     title: 'Software Developer Co-op',
     mainText: 'Sole developer of a department-wide Photo Contest portal and co-led a Conflict of Interest Declaration System for over 100,000 users. Managed full SDLC, led Agile sprint planning, and implemented Microsoft Entra ID for secure role-based access.',
     date: 'June 2024 – June 2025',
