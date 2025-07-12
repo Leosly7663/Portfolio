@@ -1,46 +1,88 @@
 const projectsData = [
   {
-    slug: "This-Portfolio",
-    title: "This Portfolio",
-    date: "2025-06",
-    description: "An interactive dashboard built with React and Chart.js for visualizing business metrics.",
-    content: `
+  slug: "this-portfolio",
+  title: "This Portfolio",
+  date: "Jan 28, 2024",
+  description: "A statically optimized, fully responsive portfolio site built with modern front-end tooling and deployed in a serverless architecture on Vercel.",
+  content: `
 ## Overview
 
-This portfolio was built with a strong focus on **clarity** and **interactive design**.  
-It features:
+This portfolio was built with a strong emphasis on **clarity**, **modularity**, and **developer experience**. It functions both as a professional showcase and as a lightweight playground for experimenting with modern web practices.
 
-- ✅ Statically generated content
-- 🎯 Reusable component architecture
-- 📱 Responsive layouts
+Key features include:
 
-### Tech Highlights
+- ⚡ **Static Site Generation (SSG)** via Next.js for optimal performance and SEO
+- 🎨 A **component-first architecture** for reusability and maintainability
+- 📱 **Mobile-first responsive design** using Tailwind's utility classes
+- 🔁 Continuous deployment integrated with GitHub for seamless updates
 
-- Built using **Next.js** and **Tailwind CSS**
-- Hosted on **Vercel** with CI/CD integration
-    `,
-    tech: [
-      {
-        title: "Front-End",
-        items: [
-          { src: "/react-2.svg", alt: "React Icon" },
-          { src: "/tailwind-css-2.svg", alt: "Tailwind Icon" }
-        ]
-      },
-      {
-        title: "Hosting",
-        items: [
-          { src: "/vercel_favicon.svg", alt: "Vercel Icon" }
-        ]
-      },
-      {
-        title: "CI CD",
-        items: [
-          { src: "/vercel_favicon.svg", alt: "Vercel Icon" }
-        ]
-      }
-    ]
-  },
+---
+
+## Technical Architecture
+
+The site is powered by the **Next.js App Router**, leveraging its support for file-based routing and metadata handling. All pages are statically generated at build time, ensuring instant load speeds with CDN-level caching through Vercel.
+
+**Tailwind CSS** provides a performant, design-system-like layer for styling. All UI components are modular and built from the ground up, avoiding external UI libraries to keep the design minimal and intentional.
+
+CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "main" or "working" branch. Vercel handles the build, cache invalidation, and atomic deployments automatically for production and testing environments.
+
+---
+
+## Deployment Model
+
+- The site is **deployed serverlessly**, with no backend infrastructure.
+- Static assets and pre-rendered HTML are distributed globally via Vercel’s edge network.
+- This results in <50ms TTFB globally and zero-maintenance scaling.
+
+---
+
+## Developer Experience
+
+- 🧪 Local development uses "vercel dev" for parity with production
+- 🧩 Modular "data/.ts" files allow dynamic page generation without a CMS
+- 🛠️ Strict TypeScript and ESLint configs ensure clean, safe code
+
+---
+
+## Future Improvements
+
+- Add structured content authoring via MDX
+- Add a dedicated pre-release environment for user testing
+- Integrate a lightweight CMS (e.g., Contentlayer or Sanity) for easier project additions
+- Support dark mode and accessibility refinements
+
+---
+  `,
+  tech: [
+    {
+      title: "Framework & Tooling",
+      items: [
+        { src: "/nextjs-icon.svg", alt: "Next.js" },
+        { src: "/react-2.svg", alt: "React" },
+        { src: "/typescript-icon.svg", alt: "TypeScript" }
+      ]
+    },
+    {
+      title: "Styling & UI",
+      items: [
+        { src: "/tailwind-css-2.svg", alt: "Tailwind CSS" }
+      ]
+    },
+    {
+      title: "Deployment & Infrastructure",
+      items: [
+        { src: "/vercel_favicon.svg", alt: "Vercel" }
+      ]
+    },
+    {
+      title: "CI/CD & DevOps",
+      items: [
+        { src: "/github-mark.svg", alt: "GitHub Actions (via Vercel)" }
+      ]
+    }
+  ]
+}
+,
   {
     slug: "Flask-Sentence-Embeddings-API",
     title: "Sentence Embeddings Generation Comparison API",
