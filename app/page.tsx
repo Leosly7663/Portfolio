@@ -24,6 +24,7 @@ const App = () => {
             <StarFieldBackground
             numStars={150}
             sizeRange={[1, 3.5]}
+            parallaxFactor={4.2}
             colorPalette={["#ffffff", "#ffeaa7", "#81ecec"]}
             colorWeights={[0.6, 0.2, 0.2]}
             animationConfig={{
