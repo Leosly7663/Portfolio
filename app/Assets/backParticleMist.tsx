@@ -2,12 +2,20 @@
 
 import React, { useEffect, useRef, useState } from "react";
 
+type AnimationConfig = {
+  fadeInSpeed?: number;
+  fadeOutSpeed?: number;
+  movementSpeed?: number;
+  maxLifeRange?: [number, number];
+};
+
 type StarFieldConfig = {
   numStars?: number;
   sizeRange?: [number, number];
   parallaxFactor?: number;
   colorPalette?: string[];
   colorWeights?: number[];
+  animationConfig?: AnimationConfig;
 };
 
 type Star = {
@@ -20,6 +28,7 @@ type Star = {
   vy: number;
   life: number;
   maxLife: number;
+  fadingIn: boolean;
 };
 
 const getWeightedRandomColor = (palette: string[], weights: number[]): string => {
@@ -38,17 +47,20 @@ const createStar = (
   height: number,
   sizeRange: [number, number],
   palette: string[],
-  weights: number[]
+  weights: number[],
+  movementSpeed: number,
+  maxLifeRange: [number, number]
 ): Star => ({
   baseX: Math.random() * width,
   baseY: Math.random() * height,
   r: Math.random() * (sizeRange[1] - sizeRange[0]) + sizeRange[0],
   color: getWeightedRandomColor(palette, weights),
-  opacity: 1,
-  vx: (Math.random() - 0.5) * 0.2,
-  vy: (Math.random() - 0.5) * 0.2,
+  opacity: 0,
+  vx: (Math.random() - 0.5) * movementSpeed,
+  vy: (Math.random() - 0.5) * movementSpeed,
   life: 0,
-  maxLife: 300 + Math.random() * 200, // frames
+  maxLife: Math.random() * (maxLifeRange[1] - maxLifeRange[0]) + maxLifeRange[0],
+  fadingIn: true,
 });
 
 const StarFieldBackground: React.FC<StarFieldConfig> = ({
@@ -57,7 +69,15 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
   parallaxFactor = 0.5,
   colorPalette = ["#ffffff"],
   colorWeights = [1],
+  animationConfig = {},
 }) => {
+  const {
+    fadeInSpeed = 0.01,
+    fadeOutSpeed = 0.005,
+    movementSpeed = 0.2,
+    maxLifeRange = [200, 500],
+  } = animationConfig;
+
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const stars = useRef<Star[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -77,7 +97,7 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
 
     const generateStars = (width: number, height: number) =>
       Array.from({ length: numStars }, () =>
-        createStar(width, height, sizeRange, colorPalette, colorWeights)
+        createStar(width, height, sizeRange, colorPalette, colorWeights, movementSpeed, maxLifeRange)
       );
 
     const resizeCanvas = () => {
@@ -94,22 +114,40 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
       ctx.clearRect(0, 0, width, height);
 
       stars.current.forEach((star, index) => {
+        // Movement
         star.baseX += star.vx;
         star.baseY += star.vy;
-        star.life += 1;
-        star.opacity = Math.max(0, 1 - star.life / star.maxLife);
 
+        // Fade in/out
+        if (star.fadingIn) {
+          star.opacity += fadeInSpeed;
+          if (star.opacity >= 1) {
+            star.opacity = 1;
+            star.fadingIn = false;
+          }
+        } else {
+          if (star.life > star.maxLife) {
+            star.opacity -= fadeOutSpeed;
+          }
+        }
+
+        // Replace if dead
+        if (star.opacity <= 0) {
+          stars.current[index] = createStar(width, height, sizeRange, colorPalette, colorWeights, movementSpeed, maxLifeRange);
+          return;
+        }
+
+        // Position with scroll
         const x = star.baseX + scrollY * parallaxFactor * 0.002 * (star.baseX - width / 2);
         const y = star.baseY + scrollY * parallaxFactor * 0.002 * (star.baseY - height / 2);
 
+        // Draw
         ctx.beginPath();
         ctx.fillStyle = hexToRGBA(star.color, star.opacity);
         ctx.arc(x, y, star.r, 0, Math.PI * 2);
         ctx.fill();
 
-        if (star.life > star.maxLife) {
-          stars.current[index] = createStar(width, height, sizeRange, colorPalette, colorWeights);
-        }
+        star.life++;
       });
     };
 
@@ -123,7 +161,7 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
       const r = (bigint >> 16) & 255;
       const g = (bigint >> 8) & 255;
       const b = bigint & 255;
-      return `rgba(${r},${g},${b},${alpha.toFixed(2)})`;
+      return `rgba(${r},${g},${b},${alpha.toFixed(3)})`;
     };
 
     resizeCanvas();
@@ -134,7 +172,18 @@ const StarFieldBackground: React.FC<StarFieldConfig> = ({
     return () => {
       window.removeEventListener("resize", resizeCanvas);
     };
-  }, [mounted, numStars, sizeRange, parallaxFactor, colorPalette, colorWeights]);
+  }, [
+    mounted,
+    numStars,
+    sizeRange,
+    parallaxFactor,
+    colorPalette,
+    colorWeights,
+    fadeInSpeed,
+    fadeOutSpeed,
+    movementSpeed,
+    maxLifeRange,
+  ]);
 
   if (!mounted) return null;
 

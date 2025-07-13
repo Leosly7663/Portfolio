@@ -22,11 +22,16 @@ const App = () => {
         <div className="absolute justify-center flex-col w-full">
           <div className=' bg-gradient-to-b from-gray-700 to-95% to-black absolute flex h-full inset-0 -z-10'>
             <StarFieldBackground
-            numStars={200}
-            sizeRange={[.2, 3.5]}
-            parallaxFactor={2}
-            colorPalette={["#ffdd99", "#ffa4a3", "#ffdfaa"]} // orange, red, yellow
-            colorWeights={[0.2, 0.5, 0.3]} // 20% orange, 50% red, 30% yellow
+            numStars={300}
+            sizeRange={[1, 2.5]}
+            colorPalette={["#ffffff", "#ffeaa7", "#81ecec"]}
+            colorWeights={[0.6, 0.2, 0.2]}
+            animationConfig={{
+              fadeInSpeed: 0.008,
+              fadeOutSpeed: 0.004,
+              movementSpeed: 0.1,
+              maxLifeRange: [300, 600],
+            }}
           />
           </div>
           <TitleCard />
