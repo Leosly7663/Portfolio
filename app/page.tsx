@@ -22,15 +22,15 @@ const App = () => {
         <div className="absolute justify-center flex-col w-full">
           <div className=' bg-gradient-to-b from-gray-700 to-95% to-black absolute flex h-full inset-0 -z-10'>
             <StarFieldBackground
-            numStars={300}
-            sizeRange={[1, 2.5]}
+            numStars={150}
+            sizeRange={[1, 3.5]}
             colorPalette={["#ffffff", "#ffeaa7", "#81ecec"]}
             colorWeights={[0.6, 0.2, 0.2]}
             animationConfig={{
               fadeInSpeed: 0.008,
-              fadeOutSpeed: 0.004,
-              movementSpeed: 0.1,
-              maxLifeRange: [300, 600],
+              fadeOutSpeed: 0.01,
+              movementSpeed: 0.2,
+              maxLifeRange: [400, 800],
             }}
           />
           </div>
