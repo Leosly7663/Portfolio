@@ -100,7 +100,7 @@ CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "mai
 }
 ,
   {
-    slug: "Flask-Sentence-Embeddings-API",
+    slug: "ResumeScanner",
     title: "Sentence Embeddings Generation Comparison API",
     date: "2025-07",
      description: `

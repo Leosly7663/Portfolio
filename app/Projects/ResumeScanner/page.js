@@ -1,6 +1,6 @@
 "use client"
 import React, { useState } from "react";
-import { extractText } from "../utils/parseFiles.js";
+import { extractText } from "../../utils/parseFiles.js";
 
 export default function ResumeScanner() {
   const [file, setFile] = useState(null);
