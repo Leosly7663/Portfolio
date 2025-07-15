@@ -2,103 +2,43 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-
-const projectsData = [
-  {
-    slug: "This-Portfolio",
-    title: "This Portfolio",
-    description: "An interactive dashboard built with React and Chart.js for visualizing business metrics.",
-    tech: [
-      {
-        title: "Front-End",
-        items: [
-          { src: "/react-2.svg", alt: "React Icon" },
-          { src: "/tailwind-css-2.svg", alt: "Tailwind Icon" }
-        ]
-      },
-      {
-        title: "Hosting",
-        items: [
-          { src: "/vercel_favicon.svg", alt: "Vercel Icon" }
-        ]
-      },
-      {
-        title: "CI CD",
-        items: [
-          { src: "/vercel_favicon.svg", alt: "Vercel Icon" }
-        ]
-      }
-    ]
-  },
-  {
-    slug: "node-api",
-    title: "Node.js API",
-    description: "RESTful API developed with Node.js and Express, featuring JWT authentication and MongoDB integration.",
-    tech: [
-      {
-        title: "Back-End",
-        items: [
-          { src: "/nodejs-icon.svg", alt: "Node.js Icon" },
-          { src: "/mongodb.svg", alt: "MongoDB Icon" }
-        ]
-      }
-    ]
-  },
-  {
-    slug: "nextjs-blog",
-    title: "Next.js Blog",
-    description: "A statically generated blog using Next.js with Markdown support and dynamic routing.",
-    tech: [
-      {
-        title: "Front-End",
-        items: [
-          { src: "/next-js.svg", alt: "Next.js Icon" }
-        ]
-      }
-    ]
-  },
-  {
-    slug: "tailwind-ui-kit",
-    title: "Tailwind UI Kit",
-    description: "A collection of reusable UI components styled with Tailwind CSS for rapid development.",
-    tech: [
-      {
-        title: "Front-End",
-        items: [
-          { src: "/tailwind-css-2.svg", alt: "Tailwind Icon" }
-        ]
-      }
-    ]
-  }
-];
+import projectsData from "../Data/Projects";
+import ReactMarkdown from 'react-markdown';
 
 const IconImage = ({ src, alt }) => (
   <Image
     src={src}
-    width={50}
-    height={50}
+    width={65}
+    height={65}
     style={{ objectFit: "contain" }}
     alt={alt}
-    className="rounded-full object-cover"
+    className="object-cover rounded-md hover:scale-105 transition-transform duration-200 ease-in-out"
   />
 );
 
 export default function ProjectsPage() {
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 mt-20 p-20">
       {projectsData.map((p) => (
-        <div key={p.slug} className="bg-black bg-opacity-20 p-4 rounded-2xl">
-          <h2 className="text-xl font-semibold text-white">{p.title}</h2>
-          <p className="text-gray-400 mb-2">{p.description}</p>
-          <Link href={`/projects/${p.slug}`} className="text-blue-400 underline">
+        <div key={p.slug} className="bg-gradient-to-br from-stone-900 to-slate-950  bg-opacity-20 p-4 rounded-2xl flex-row flex justify-between">
+          <div className="flex flex-col bg-slate-950 justify-between w-9/12 bg-opacity-80 rounded-xl p-4">
+            <div className="prose prose-invert text-gray-400 mb-2">
+              <ReactMarkdown >
+                {p.description}
+              </ReactMarkdown>
+            </div>
+            <Link
+            href={`/projects/${p.slug}`}
+            className="inline-block px-4 py-2 bg-gradient-to-t from-blue-950 self-end text-white font-semibold rounded-xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg hover:from-purple-500 hover:to-blue-600">
             View Project
-          </Link>
+            </Link>
+          </div>
           {p.tech && (
-            <div className="mt-4 space-y-2">
+            <div className="p-2 align-middle items-start text-center grid grid-cols-1 sm:grid-cols-2">
               {p.tech.map((section, i) => (
-                <div key={i}>
-                  <h4 className="text-gray-300 mb-1">{section.title}:</h4>
-                  <div className="flex space-x-2">
+                <div key={i} className="flex items-center bg-opacity-70 flex-col space-y-2 mr-6 rounded-md bg-gray-800 pb-2">
+                  <h4 className="text-gray-300 font-semibold mb-1 pt-2 px-2">{section.title}:</h4>
+                  <div className="flex pb-2 flex-col gap-4">
                     {section.items.map((img, index) => (
                       <IconImage key={index} src={img.src} alt={img.alt} />
                     ))}
@@ -107,6 +47,7 @@ export default function ProjectsPage() {
               ))}
             </div>
           )}
+
         </div>
       ))}
     </div>

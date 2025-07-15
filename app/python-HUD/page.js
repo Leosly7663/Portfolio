@@ -5,7 +5,7 @@ import ImageCarousel from '../Components/slider.js';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
-const pythonHUD = () => {
+const PythonHUD = () => {
     const router = useRouter()
   return (
         <div className="min-h-screen bg-gray-100 flex flex-col justify-center items-center">
@@ -62,4 +62,4 @@ const pythonHUD = () => {
   );
 };
 
-export default pythonHUD;
+export default PythonHUD;
