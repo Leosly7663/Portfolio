@@ -3,7 +3,9 @@ const projectsData = [
   slug: "this-portfolio",
   title: "This Portfolio",
   date: "Jan 28, 2024",
-  description: "A statically optimized, fully responsive portfolio site built with modern front-end tooling and deployed in a serverless architecture on Vercel.",
+  description: `
+  ## A 
+  statically optimized, fully responsive portfolio site built with modern front-end tooling and deployed in a serverless architecture on Vercel.`,
   content: `
 ## Overview
 
@@ -57,27 +59,29 @@ CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "mai
     {
       title: "Framework & Tooling",
       items: [
-        { src: "/nextjs-icon.svg", alt: "Next.js" },
+        { src: "/next-js.svg", alt: "Next.js" },
         { src: "/react-2.svg", alt: "React" },
-        { src: "/typescript-icon.svg", alt: "TypeScript" }
+        { src: "/Typescript-logo.png", alt: "TypeScript" }
       ]
     },
     {
-      title: "Styling & UI",
+      title: "Styling & UI/UX",
       items: [
-        { src: "/tailwind-css-2.svg", alt: "Tailwind CSS" }
+        { src: "/tailwind-css-2.svg", alt: "Tailwind CSS" },
+        { src: "/Figma-logo.png", alt: "Figma" }
       ]
     },
     {
       title: "Deployment & Infrastructure",
       items: [
-        { src: "/vercel_favicon.svg", alt: "Vercel" }
+        { src: "/vercel_favicon.svg", alt: "Vercel" },
+        { src: "/nodejs-logo.png", alt: "Node" }
       ]
     },
     {
       title: "CI/CD & DevOps",
       items: [
-        { src: "/github-mark.svg", alt: "GitHub Actions (via Vercel)" }
+        { src: "/github-actions-logo.png", alt: "GitHub Actions (via Vercel)" }
       ]
     }
   ]
@@ -106,11 +110,18 @@ It returns **semantic match percentages** using **sentence-transformer embedding
     `,
     tech: [
       {
-        title: "Back-End",
+        title: "Embedding Logic",
         items: [
-          { src: "/python.svg", alt: "Python Icon" },
+          { src: "/python-logo.png", alt: "Python Icon" },
+          { src: "/SBERT.png", alt: "Sentence Transformers Icon" },
+        ]
+      },
+      {
+        title: "Hosting & API Access",
+        items: [
           { src: "/flask.svg", alt: "Flask Icon" },
-          { src: "/docker.svg", alt: "Docker Icon" }
+          { src: "/Cloudflare-icon.png", alt: "Cloudflare Icon" },
+          { src: "/docker-icon.png", alt: "Docker Icon" }
         ]
       }
     ]
