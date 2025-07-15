@@ -3,6 +3,7 @@ import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import projectsData from "../Data/Projects";
+import ReactMarkdown from 'react-markdown';
 
 const IconImage = ({ src, alt }) => (
   <Image
@@ -21,9 +22,10 @@ export default function ProjectsPage() {
       {projectsData.map((p) => (
         <div key={p.slug} className="bg-gradient-to-br from-stone-900 to-slate-950  bg-opacity-20 p-4 rounded-2xl flex-row flex justify-between">
           <div className="flex flex-col bg-slate-950 justify-between w-9/12 bg-opacity-80 rounded-xl p-4">
-            <div className="">
-              <h2 className="text-xl font-semibold text-white">{p.title}</h2>
-              <p className="text-gray-400 mb-2">{p.description}</p>
+            <div className="prose prose-invert text-gray-400 mb-2">
+              <ReactMarkdown >
+                {p.description}
+              </ReactMarkdown>
             </div>
             <Link
             href={`/projects/${p.slug}`}
@@ -32,7 +34,7 @@ export default function ProjectsPage() {
             </Link>
           </div>
           {p.tech && (
-            <div className="p-2 align-middle items-start text-center flex flex-row">
+            <div className="p-2 align-middle items-start text-center grid grid-cols-1 sm:grid-cols-2">
               {p.tech.map((section, i) => (
                 <div key={i} className="flex items-center bg-opacity-70 flex-col space-y-2 mr-6 rounded-md bg-gray-800 pb-2">
                   <h4 className="text-gray-300 font-semibold mb-1 pt-2 px-2">{section.title}:</h4>
