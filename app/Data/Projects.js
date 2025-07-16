@@ -6,66 +6,66 @@ const projectsData = [
   description: `
   ## This Portfolio – Developer Profile Website
 
-A statically optimized, fully responsive developer portfolio built with modern full-stack technologies including **Next.js**, **React**, and **TypeScript**, and styled using **Tailwind CSS**. The project is hosted on **Vercel** using a serverless architecture and continuous deployment via **GitHub Actions**.
+  A statically optimized, fully responsive developer portfolio built with modern full-stack technologies including **Next.js**, **React**, and **TypeScript**, and styled using **Tailwind CSS**. The project is hosted on **Vercel** using a serverless architecture and continuous deployment via **GitHub Actions**.
 
-The site showcases key professional highlights and personal projects, integrating animation, responsive design, and clean UX/UI practices. Design prototypes were developed in **Figma**, with a strong emphasis on accessible content structure and performance optimization.
+  The site showcases key professional highlights and personal projects, integrating animation, responsive design, and clean UX/UI practices. Design prototypes were developed in **Figma**, with a strong emphasis on accessible content structure and performance optimization.
 
-### 🔧 Key Features
-- Modular project architecture with dynamic routing  
-- Tailored UI/UX components built from scratch and styled via Tailwind  
-- Rich project highlights section with live previews and categorized tech stacks  
-- Custom background animation for visual impact  
-- Integrated resume download, social links, and direct contact options  
+  ### 🔧 Key Features
+  - Modular project architecture with dynamic routing  
+  - Tailored UI/UX components built from scratch and styled via Tailwind  
+  - Rich project highlights section with live previews and categorized tech stacks  
+  - Custom background animation for visual impact  
+  - Integrated resume download, social links, and direct contact options  
 
-This portfolio not only demonstrates core front-end and design skills, but also reflects strong experience in system integration, **DevOps** (via GitHub Actions), and component-driven development.`,
-content: `
-## Overview
+  This portfolio not only demonstrates core front-end and design skills, but also reflects strong experience in system integration, **DevOps** (via GitHub Actions), and component-driven development.`,
+  content: `
+  ## Overview
 
-This portfolio was built with a strong emphasis on **clarity**, **modularity**, and **developer experience**. It functions both as a professional showcase and as a lightweight playground for experimenting with modern web practices.
+  This portfolio was built with a strong emphasis on **clarity**, **modularity**, and **developer experience**. It functions both as a professional showcase and as a lightweight playground for experimenting with modern web practices.
 
-Key features include:
+  Key features include:
 
-- ⚡ **Static Site Generation (SSG)** via Next.js for optimal performance and SEO
-- 🎨 A **component-first architecture** for reusability and maintainability
-- 📱 **Mobile-first responsive design** using Tailwind's utility classes
-- 🔁 Continuous deployment integrated with GitHub for seamless updates
+  - ⚡ **Static Site Generation (SSG)** via Next.js for optimal performance and SEO
+  - 🎨 A **component-first architecture** for reusability and maintainability
+  - 📱 **Mobile-first responsive design** using Tailwind's utility classes
+  - 🔁 Continuous deployment integrated with GitHub for seamless updates
 
----
+  ---
 
-## Technical Architecture
+  ## Technical Architecture
 
-The site is powered by the **Next.js App Router**, leveraging its support for file-based routing and metadata handling. All pages are statically generated at build time, ensuring instant load speeds with CDN-level caching through Vercel.
+  The site is powered by the **Next.js App Router**, leveraging its support for file-based routing and metadata handling. All pages are statically generated at build time, ensuring instant load speeds with CDN-level caching through Vercel.
 
-**Tailwind CSS** provides a performant, design-system-like layer for styling. All UI components are modular and built from the ground up, avoiding external UI libraries to keep the design minimal and intentional.
+  **Tailwind CSS** provides a performant, design-system-like layer for styling. All UI components are modular and built from the ground up, avoiding external UI libraries to keep the design minimal and intentional.
 
-CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "main" or "working" branch. Vercel handles the build, cache invalidation, and atomic deployments automatically for production and testing environments.
+  CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "main" or "working" branch. Vercel handles the build, cache invalidation, and atomic deployments automatically for production and testing environments.
 
----
+  ---
 
-## Deployment Model
+  ## Deployment Model
 
-- The site is **deployed serverlessly**, with no backend infrastructure.
-- Static assets and pre-rendered HTML are distributed globally via Vercel’s edge network.
-- This results in <50ms TTFB globally and zero-maintenance scaling.
+  - The site is **deployed serverlessly**, with no backend infrastructure.
+  - Static assets and pre-rendered HTML are distributed globally via Vercel’s edge network.
+  - This results in <50ms TTFB globally and zero-maintenance scaling.
 
----
+  ---
 
-## Developer Experience
+  ## Developer Experience
 
-- 🧪 Local development uses "vercel dev" for parity with production
-- 🧩 Modular "data/.ts" files allow dynamic page generation without a CMS
-- 🛠️ Strict TypeScript and ESLint configs ensure clean, safe code
+  - 🧪 Local development uses "vercel dev" for parity with production
+  - 🧩 Modular "data/.ts" files allow dynamic page generation without a CMS
+  - 🛠️ Strict TypeScript and ESLint configs ensure clean, safe code
 
----
+  ---
 
-## Future Improvements
+  ## Future Improvements
 
-- Add structured content authoring via MDX
-- Add a dedicated pre-release environment for user testing
-- Integrate a lightweight CMS (e.g., Contentlayer or Sanity) for easier project additions
-- Support dark mode and accessibility refinements
+  - Add structured content authoring via MDX
+  - Add a dedicated pre-release environment for user testing
+  - Integrate a lightweight CMS (e.g., Contentlayer or Sanity) for easier project additions
+  - Support dark mode and accessibility refinements
 
----
+  ---
   `,
   tech: [
     {
@@ -100,7 +100,7 @@ CI/CD is handled entirely by **Vercel**, triggered via GitHub pushes to the "mai
 }
 ,
   {
-    slug: "ResumeScanner",
+    slug: "resumescanner",
     title: "Sentence Embeddings Generation Comparison API",
     date: "2025-07",
      description: `
