@@ -100,7 +100,7 @@ const projectsData = [
 }
 ,
   {
-    slug: "resumescanner",
+    slug: "ResumeScanner",
     title: "Sentence Embeddings Generation Comparison API",
     date: "2025-07",
      description: `
