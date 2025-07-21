@@ -43,6 +43,24 @@ export default function ResumeScanner() {
         .map((s) => s.trim())
         .filter(Boolean);
 
+        const getGradientColor = (percent) => {
+        const r = percent < 50 ? 255 : Math.floor(255 - (percent - 50) * 5.1);
+        const g = percent > 50 ? 255 : Math.floor(percent * 5.1);
+        return `rgb(${r}, ${g}, 0)`;
+      };
+
+      const handleDeleteResult = (index) => {
+        setMatchResults((prev) => prev.filter((_, i) => i !== index));
+      };
+
+      const getAverageSimilarity = () => {
+        if (!matchResults?.length) return 0;
+        const sum = matchResults.reduce((acc, cur) => acc + cur.similarityPercent, 0);
+        return sum / matchResults.length;
+      };
+
+
+
       const response = await fetch("https://api.leonardonigro.com/combine-match", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -153,13 +171,37 @@ export default function ResumeScanner() {
         {matchResults && (
           <div className="bg-black/30 rounded-xl p-4 space-y-4 mt-6">
             <h2 className="text-xl text-white font-semibold mb-2">Matching Results</h2>
+
+            {/* Overall Average Score */}
+            <div className="text-white font-bold text-lg">
+              Overall Match:{" "}
+              <span
+                style={{ backgroundColor: getGradientColor(getAverageSimilarity()) }}
+                className="text-black px-2 py-1 rounded"
+              >
+                {getAverageSimilarity().toFixed(1)}%
+              </span>
+            </div>
+
             {matchResults.map((item, idx) => (
-              <div key={idx} className="bg-white/5 p-4 rounded-lg border border-white/10">
+              <div
+                key={idx}
+                className="bg-white/5 p-4 rounded-lg border border-white/10 relative"
+              >
+                <button
+                  onClick={() => handleDeleteResult(idx)}
+                  className="absolute top-2 right-2 text-red-400 hover:text-red-600"
+                >
+                  ✕
+                </button>
                 <h3 className="text-white font-medium">Job Requirement:</h3>
                 <p className="text-gray-300 mb-2">{item.jobSentence}</p>
                 <h3 className="text-white font-medium">Best Matching Resume Sentence:</h3>
                 <p className="text-gray-300 mb-2">{item.bestMatchSentence}</p>
-                <span className="text-sm bg-green-600 text-white px-2 py-1 rounded">
+                <span
+                  className="text-sm text-black px-2 py-1 rounded"
+                  style={{ backgroundColor: getGradientColor(item.similarityPercent) }}
+                >
                   {item.similarityPercent}% similarity
                 </span>
               </div>

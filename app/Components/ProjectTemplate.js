@@ -20,7 +20,7 @@ const ProjectTemplate = ({ title, date, description, tech, content, demo, repo, 
             <Link
              href={demo}
             className="inline-block px-4 py-2 bg-gradient-to-t from-blue-950 self-end text-white font-semibold rounded-xl shadow-md transition-transform transform hover:scale-105 hover:shadow-lg hover:from-purple-500 hover:to-blue-600">
-            View Project
+            Open Live Demo
             </Link>
           )}
           {repo && (
