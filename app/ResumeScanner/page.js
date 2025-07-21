@@ -27,20 +27,20 @@ export default function ResumeScanner() {
   };
 
   const getGradientColor = (percent) => {
-        const r = percent < 50 ? 255 : Math.floor(255 - (percent - 50) * 5.1);
-        const g = percent > 50 ? 255 : Math.floor(percent * 5.1);
-        return `rgb(${r}, ${g}, 0)`;
-    };
+      const r = percent < 50 ? 255 : Math.floor(255 - (percent - 50) * 5.1);
+      const g = percent > 50 ? 255 : Math.floor(percent * 5.1);
+      return `rgb(${r}, ${g}, 0)`;
+  };
 
-    const handleDeleteResult = (index) => {
-      setMatchResults((prev) => prev.filter((_, i) => i !== index));
-    };
+  const handleDeleteResult = (index) => {
+    setMatchResults((prev) => prev.filter((_, i) => i !== index));
+  };
 
-    const getAverageSimilarity = () => {
-      if (!matchResults?.length) return 0;
-      const sum = matchResults.reduce((acc, cur) => acc + cur.similarityPercent, 0);
-      return sum / matchResults.length;
-    };
+  const getAverageSimilarity = () => {
+    if (!matchResults?.length) return 0;
+    const sum = matchResults.reduce((acc, cur) => acc + cur.similarityPercent, 0);
+    return sum / matchResults.length;
+  };
 
   const handleMatch = async () => {
     if (!file || !jobDescription.trim()) {
