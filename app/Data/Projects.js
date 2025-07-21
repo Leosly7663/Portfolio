@@ -3,6 +3,7 @@ const projectsData = [
   slug: "this-portfolio",
   title: "This Portfolio",
   date: "Jan 28, 2024",
+  demo: "/",
   description: `
   ## This Portfolio – Developer Profile Website
 
@@ -102,6 +103,7 @@ const projectsData = [
   {
     slug: "ResumeScanner",
     title: "Sentence Embeddings Generation Comparison API",
+    demo: "/ResumeScanner",
     date: "2025-07",
      description: `
   ## Resume Scanner – AI-Powered PDF & Text Matcher
