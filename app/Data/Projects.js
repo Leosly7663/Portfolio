@@ -152,7 +152,79 @@ It returns **semantic match percentages** using **sentence-transformer embedding
         ]
       }
     ]
-  },
+  },{
+  slug: "HybridETFTrackerAI",
+  title: "Hybrid ETF Portfolio Tracker & Local AI Commentary Writer",
+  demo: "/ETFTracker",
+  date: "2025-08",
+  description: `
+  ## Hybrid ETF Portfolio Tracker & Local AI Commentary Writer
+
+This project merges a **public ETF tracking dashboard** with a **private local AI system** to deliver professional-grade investment analysis and commentary.  
+It showcases skills in **full-stack development**, **quantitative finance analytics**, and **local AI orchestration**.
+
+### 📊 How It Works
+- The **Vercel-hosted Next.js frontend** displays ETF bundle performance, asset allocations, and AI-generated commentary.
+- A **Supabase cloud database** stores public-facing ETF data and AI reports, ensuring 24/7 availability.
+- A **local lab environment** (MySQL/Postgres) is the *master source* for ETF data and AI-generated insights.
+- **Market data APIs** (Yahoo Finance, Polygon.io) feed live or daily data into the local database.
+- A **local AI runtime** (Ollama or LM Studio) generates investor-style reports using **Mistral 7B** or **LLaMA 3 8B**.
+- A **sync script** pushes fresh data and commentary to Supabase for public display.
+- **Cloudflare Tunnel** enables secure remote API and DB access without exposing the home network.
+
+This hybrid design demonstrates **real-time financial analytics** combined with **AI-generated insights**, making it relevant for both **quant finance** and **AI/ML applications**.
+  `,
+  content: `
+## Overview
+
+This system consists of two main components:
+
+- 🌐 **Always-On Public Side**:  
+  Hosted on Vercel, powered by Next.js, TailwindCSS, and Supabase.  
+  Displays ETF bundle data, allocation charts, and AI-generated commentary.
+
+- 🖥 **On-Demand Local AI Side**:  
+  Runs locally for heavy compute tasks, such as generating portfolio commentary or cover letters.  
+  Uses Ollama or LM Studio to run quantized **Mistral 7B** or **LLaMA 3 8B** models.  
+
+### Deployment
+
+- 📦 **Frontend**: Vercel-hosted Next.js app with TailwindCSS
+- 🗄 **Cloud DB**: Supabase (PostgreSQL) for public data storage
+- 💻 **Local DB**: MySQL/PostgreSQL for master data
+- 🤖 **AI Runtime**: Ollama/LM Studio with local inference
+- 🔒 **Networking**: Cloudflare Tunnel for secure remote API access
+- 📈 **Data Sources**: Yahoo Finance, Polygon.io APIs
+  `,
+  tech: [
+    {
+      title: "Frontend & Hosting",
+      items: [
+        { src: "/nextjs-icon.png", alt: "Next.js Icon" },
+        { src: "/tailwindcss-icon.png", alt: "TailwindCSS Icon" },
+        { src: "/vercel-icon.png", alt: "Vercel Icon" }
+      ]
+    },
+    {
+      title: "Backend & Data",
+      items: [
+        { src: "/python-logo.png", alt: "Python Icon" },
+        { src: "/supabase-icon.png", alt: "Supabase Icon" },
+        { src: "/postgresql-icon.png", alt: "PostgreSQL Icon" }
+      ]
+    },
+    {
+      title: "AI & Infrastructure",
+      items: [
+        { src: "/ollama-icon.png", alt: "Ollama Icon" },
+        { src: "/llama-icon.png", alt: "LLaMA Icon" },
+        { src: "/mistral-icon.png", alt: "Mistral Icon" },
+        { src: "/cloudflare-icon.png", alt: "Cloudflare Tunnel Icon" }
+      ]
+    }
+  ]
+}
+
   ];
 
 export default projectsData;
