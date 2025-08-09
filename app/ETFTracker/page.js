@@ -8,6 +8,7 @@ export default function BundlesPage() {
   const [liveBundles, setLiveBundles] = useState([]);
   const [demoBundles, setDemoBundles] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [updating, setUpdating] = useState(true);
 
   useEffect(() => {
     fetchBundles();
@@ -45,6 +46,17 @@ export default function BundlesPage() {
       setDemoBundles(formatted.filter((b) => b.type === "Demo"));
     }
     setLoading(false);
+  }
+
+   useEffect(() => {
+    refreshPerformance();
+  }, []);
+
+  async function refreshPerformance() {
+    setUpdating(true);
+    await fetch("/utils/recompute", { method: "POST" });
+    await fetchBundles(); // re-pull from DB
+    setUpdating(false);
   }
 
   function renderBundleCard(bundle) {
