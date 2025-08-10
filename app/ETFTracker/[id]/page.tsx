@@ -108,7 +108,7 @@ export default function BundleDetailsPage() {
     setQuotesLoading(true);
     try {
       // If your endpoint is /api/StockQuotes, update here:
-      const res = await fetch(`/utils/StockQuotes?symbols=${encodeURIComponent(symbols.join(","))}`);
+      const res = await fetch(`/api/StockQuotes?symbols=${encodeURIComponent(symbols.join(","))}`);
       const json = await res.json();
       if (json?.quotes) setQuotes(json.quotes);
     } catch (e) {
