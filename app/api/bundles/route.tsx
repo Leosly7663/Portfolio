@@ -7,18 +7,21 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type NewBundleAsset = {
-  ticker: string;            // e.g., "AAPL" or "RY.TO"
-  shares?: number;         // default 1
-  open_price_USD?: number | null;// optional; can be null
-  inception_date?: string;   // ISO string; server will default if missing
+  ticker: string;                  // e.g., "AAPL" or "RY.TO"
+  shares?: number;                 // default 1
+  open_price_USD?: number | null;  // optional; can be null
+  inception_date?: string;         // ISO string; server will default if missing
+  rule_id?: number | null;         // <-- NEW: Managed rule selection (nullable)
 };
 
 type NewBundleBody = {
+  user_id: string;                 // <-- NEW: pass from useAuth().user.id
   name: string;
-  type: "Live" | "Demo";
+  type: "Spot" | "Managed";
   assets: NewBundleAsset[];
 };
 
+// Admin client (server-side writes)
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
   process.env.SUPABASE_SERVICE_ROLE_KEY!, // server-only
@@ -53,23 +56,27 @@ export async function POST(req: Request) {
     const body = (await req.json()) as NewBundleBody;
 
     // basic validation
+    if (!body?.user_id || typeof body.user_id !== "string") {
+      return NextResponse.json({ error: "Unauthorized (missing user_id)" }, { status: 401 });
+    }
     if (!body?.name?.trim()) {
       return NextResponse.json({ error: "Missing bundle name" }, { status: 400 });
     }
-    if (body.type !== "Live" && body.type !== "Demo") {
+    if (body.type !== "Spot" && body.type !== "Managed") {
       return NextResponse.json({ error: "Invalid type" }, { status: 400 });
     }
     if (!Array.isArray(body.assets) || body.assets.length === 0) {
       return NextResponse.json({ error: "Add at least one asset" }, { status: 400 });
     }
 
+    const userId = body.user_id;
     const name = body.name.trim();
     const nowIso = new Date().toISOString();
 
-    // 1) create bundle
+    // 1) create bundle (stamp user_id)
     const { data: bundleRow, error: bundleErr } = await supabase
       .from("Soln0002 - Bundles")
-      .insert([{ name, type: body.type, bundle_PL: 0 }])
+      .insert([{ name, type: body.type, bundle_PL: 0, user_id: userId }])
       .select("id")
       .single();
 
@@ -78,7 +85,7 @@ export async function POST(req: Request) {
     }
     const bundleId = bundleRow.id as number;
 
-    // 2) build link rows
+    // 2) build link rows (include rule_id for Managed; allow null)
     const linkRows: any[] = [];
     for (const a of body.assets) {
       const ticker = (a.ticker || "").trim().toUpperCase();
@@ -89,9 +96,8 @@ export async function POST(req: Request) {
       const quantity = Number(a.shares ?? 1);
       const openPrice = a.open_price_USD ?? null;
 
-      // Live: inception forced to now; Demo: use provided or now
       const inceptionIso =
-        body.type === "Live"
+        body.type === "Spot"
           ? nowIso
           : a.inception_date
           ? new Date(a.inception_date).toISOString()
@@ -103,6 +109,7 @@ export async function POST(req: Request) {
         open_price_USD: openPrice,
         shares: quantity,
         inception_date: inceptionIso,
+        rule_id: body.type === "Managed" ? (a.rule_id ?? null) : null, // <-- here
       });
     }
 
