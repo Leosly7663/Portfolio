@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useCallback } from "react";
-import { supabase } from "../Lib/supabaseClient";
+import { supabase } from "../Lib/supabase/supabaseClient";
 
 export type SessionUser = {
   id: string;

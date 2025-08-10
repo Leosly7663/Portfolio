@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { supabase } from "../../Lib/supabaseClient";
+import { supabase } from "../../Lib/supabase/supabaseClient";
 import { LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 
 /* ======================== Types ======================== */
@@ -13,7 +13,7 @@ type AssetRow = {
   linkId: number;           // from "Soln0002 - Assets to Bundles".id
   ruleId: number | null;    // from "Soln0002 - Assets to Bundles".rule_id  👈 we use this now
   ticker: string;
-  open_price_USD: number | null;
+  open_price_usd: number | null;
   inception_date: Date | null;
   shares: number;
 };
@@ -53,11 +53,11 @@ export default function BundleDetailsPage() {
         id,
         name,
         type,
-        performance:bundle_PL,
+        performance:bundle_pl,
         assets:"Soln0002 - Assets to Bundles" (
           id,
           rule_id,
-          open_price_USD,
+          open_price_usd,
           inception_date,
           shares,
           asset:"Soln0002 - Assets" (
@@ -81,7 +81,7 @@ export default function BundleDetailsPage() {
       linkId: row.id,
       ruleId: row.rule_id ?? null,
       ticker: row.asset.ticker,
-      open_price_USD: row.open_price_USD ?? null,
+      open_price_usd: row.open_price_usd ?? null,
       inception_date: row.inception_date ? new Date(row.inception_date) : null,
       shares: row.shares ?? 1,
     }));
@@ -108,7 +108,7 @@ export default function BundleDetailsPage() {
     setQuotesLoading(true);
     try {
       // If your endpoint is /api/StockQuotes, update here:
-      const res = await fetch(`/api/StockQuotes?symbols=${encodeURIComponent(symbols.join(","))}`);
+      const res = await fetch(`/ETFTracker/api/StockQuotes?symbols=${encodeURIComponent(symbols.join(","))}`);
       const json = await res.json();
       if (json?.quotes) setQuotes(json.quotes);
     } catch (e) {
@@ -203,7 +203,7 @@ async function createAndAttachRuleForSelected() {
       const q = quotes[a.ticker?.toUpperCase?.()];
       const last = q?.price ?? null;
       const qty = a.shares ?? 1;
-      const cost = (Number(a.open_price_USD ?? 0) || 0) * qty;
+      const cost = (Number(a.open_price_usd ?? 0) || 0) * qty;
       const mkt = last ? last * qty : 0;
       totalCost += cost;
       totalMkt += mkt;
@@ -414,7 +414,7 @@ function SpotTable({
               const last = typeof q?.price === "number" ? q!.price : null;
               const prev = typeof q?.previousClose === "number" ? q!.previousClose : null;
               const qty = Number(a.shares ?? 1);
-              const costPerShare = Number(a.open_price_USD ?? 0) || 0;
+              const costPerShare = Number(a.open_price_usd ?? 0) || 0;
               const dayChange = last != null && prev != null ? last - prev : null;
               const dayPct = last != null && prev ? ((last - prev) / prev) * 100 : null;
               const pl = last != null ? (last - costPerShare) * qty : null;
@@ -530,7 +530,7 @@ function ManagedTable({
               const last = typeof q?.price === "number" ? q!.price : null;
               const prev = typeof q?.previousClose === "number" ? q!.previousClose : null;
               const qty = Number(a.shares ?? 1);
-              const costPerShare = Number(a.open_price_USD ?? 0) || 0;
+              const costPerShare = Number(a.open_price_usd ?? 0) || 0;
               const dayChange = last != null && prev != null ? last - prev : null;
               const pl = last != null ? (last - costPerShare) * qty : null;
 
@@ -671,7 +671,7 @@ function ManagedRulesEditorCore({
       setLoading(true);
       setError(null);
       try {
-        const res = await fetch(`/api/managedRules/${ruleId}`, { method: "GET" });
+        const res = await fetch(`/ETFTracker/api/managedRules/${ruleId}`, { method: "GET" });
         if (!res.ok) {
           if (res.status === 404) {
             if (!abort) setRules(defaultRules);
@@ -700,7 +700,7 @@ function ManagedRulesEditorCore({
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch(`/api/managedRules/${rules.id}`, {
+      const res = await fetch(`/ETFTracker/api/managedRules/${rules.id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(rules),
@@ -720,7 +720,7 @@ function ManagedRulesEditorCore({
     setSaving(true);
     setError(null);
     try {
-      const res = await fetch(`/api/managedRules/${ruleId}`, { method: "DELETE" });
+      const res = await fetch(`/ETFTracker/api/managedRules/${ruleId}`, { method: "DELETE" });
       if (!res.ok) {
         const j = await safeJson(res);
         throw new Error(j?.error || `Delete failed (${res.status})`);

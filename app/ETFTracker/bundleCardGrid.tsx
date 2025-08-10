@@ -17,8 +17,8 @@ export function BundleCardGrid({ bundles }: { bundles: BundleRow[] }) {
                 </span>
               ))}
             </div>
-            <p className={`font-bold ${typeof b.bundle_PL === "number" ? (b.bundle_PL >= 0 ? "text-green-600" : "text-red-600") : "text-gray-500"}`}>
-              {typeof b.bundle_PL === "number" ? `${b.bundle_PL >= 0 ? "+" : ""}${b.bundle_PL.toFixed(2)}%` : "—"}
+            <p className={`font-bold ${typeof b.bundle_pl === "number" ? (b.bundle_pl >= 0 ? "text-green-600" : "text-red-600") : "text-gray-500"}`}>
+              {typeof b.bundle_pl === "number" ? `${b.bundle_pl >= 0 ? "+" : ""}${b.bundle_pl.toFixed(2)}%` : "—"}
             </p>
           </div>
         </Link>

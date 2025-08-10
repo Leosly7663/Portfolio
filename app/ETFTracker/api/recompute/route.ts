@@ -11,7 +11,7 @@ type AssetRecord = { ticker?: string | null } | null;
 type AssetRecordMaybeArray = AssetRecord | AssetRecord[] | null;
 
 type LinkRow = {
-  open_price_USD?: number | null;
+  open_price_usd?: number | null;
   shares?: number | null;
   asset?: AssetRecordMaybeArray;
 };
@@ -79,7 +79,7 @@ export async function POST() {
       .select(`
         id, name,
         assets: "Soln0002 - Assets to Bundles" (
-          open_price_USD, shares,
+          open_price_usd, shares,
           asset: "Soln0002 - Assets" ( ticker )
         )
       `);
@@ -118,7 +118,7 @@ export async function POST() {
 
         const last = quotesMap[t.toUpperCase()]?.price ?? null;
         const qty = Number(r.shares ?? 1);
-        const cost = Number(r.open_price_USD ?? 0) * qty;
+        const cost = Number(r.open_price_usd ?? 0) * qty;
 
         totalCost += cost;
         if (last != null) {
@@ -135,7 +135,7 @@ export async function POST() {
       const { error: updErr } = await supabase
         .from("Soln0002 - Bundles")
         .update({
-          bundle_PL: rounded,
+          bundle_pl: rounded,
           last_updated_at: new Date().toISOString(),
         })
         .eq("id", b.id);

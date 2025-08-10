@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useState } from "react";
-import { supabase } from "../Lib/supabaseClient";
+import { supabase } from "../Lib/supabase/supabaseClient";
 import { SessionUser } from "./useAuth";
 
 export type Profile = {

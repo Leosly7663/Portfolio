@@ -1,12 +1,12 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { supabase } from "../Lib/supabaseClient";
-import { recomputeBundles } from "../api/apiClient/route";
+import { supabase } from "../Lib/supabase/supabaseClient";
+import { recomputeBundles } from "./api/apiClient/route";
 
 export type BundleRow = {
   id: number;
   name: string;
-  type: "Spot" | "Managed";
-  bundle_PL: number | null;
+  bundle_type: "Spot" | "Managed";
+  bundle_pl: number | null;
   assets: { id: number; ticker: string }[];
 };
 
@@ -21,7 +21,7 @@ export function useBundles() {
     const { data, error } = await supabase
       .from("Soln0002 - Bundles")
       .select(
-        `id, name, type, bundle_PL, assets:"Soln0002 - Assets to Bundles"(asset:"Soln0002 - Assets"(id, ticker))`
+        `id, name, type, bundle_pl, assets:"Soln0002 - Assets to Bundles"(asset:"Soln0002 - Assets"(id, ticker))`
       );
 
     if (error) {
@@ -32,12 +32,12 @@ export function useBundles() {
       const formatted = (data || []).map((b: any) => ({
         id: b.id,
         name: b.name,
-        type: b.type,
-        bundle_PL: b.bundle_PL ?? null,
+        bundle_type: b.bundle_type,
+        bundle_pl: b.bundle_pl ?? null,
         assets: (b.assets || []).map((a: any) => a.asset).filter(Boolean),
       })) as BundleRow[];
-      setSpotBundles(formatted.filter((b) => b.type === "Spot"));
-      setManagedBundles(formatted.filter((b) => b.type === "Managed"));
+      setSpotBundles(formatted.filter((b) => b.bundle_type === "Spot"));
+      setManagedBundles(formatted.filter((b) => b.bundle_type === "Managed"));
     }
     setLoading(false);
   }, []);

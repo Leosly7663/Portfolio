@@ -7,9 +7,9 @@ export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 type NewBundleAsset = {
-  ticker: string;                  // e.g., "AAPL" or "RY.TO"
+  ticker: string;                  // e.g., "AApl" or "RY.TO"
   shares?: number;                 // default 1
-  open_price_USD?: number | null;  // optional; can be null
+  open_price_usd?: number | null;  // optional; can be null
   inception_date?: string;         // ISO string; server will default if missing
   rule_id?: number | null;         // <-- NEW: Managed rule selection (nullable)
 };
@@ -17,7 +17,7 @@ type NewBundleAsset = {
 type NewBundleBody = {
   user_id: string;                 // <-- NEW: pass from useAuth().user.id
   name: string;
-  type: "Spot" | "Managed";
+  bundle_type: "Spot" | "Managed";
   assets: NewBundleAsset[];
 };
 
@@ -62,7 +62,7 @@ export async function POST(req: Request) {
     if (!body?.name?.trim()) {
       return NextResponse.json({ error: "Missing bundle name" }, { status: 400 });
     }
-    if (body.type !== "Spot" && body.type !== "Managed") {
+    if (body.bundle_type !== "Spot" && body.bundle_type !== "Managed") {
       return NextResponse.json({ error: "Invalid type" }, { status: 400 });
     }
     if (!Array.isArray(body.assets) || body.assets.length === 0) {
@@ -76,7 +76,7 @@ export async function POST(req: Request) {
     // 1) create bundle (stamp user_id)
     const { data: bundleRow, error: bundleErr } = await supabase
       .from("Soln0002 - Bundles")
-      .insert([{ name, type: body.type, bundle_PL: 0, user_id: userId }])
+      .insert([{ name, type: body.bundle_type, bundle_pl: 0, user_id: userId }])
       .select("id")
       .single();
 
@@ -94,10 +94,10 @@ export async function POST(req: Request) {
       const assetId = await getOrCreateAssetId(ticker);
 
       const quantity = Number(a.shares ?? 1);
-      const openPrice = a.open_price_USD ?? null;
+      const openPrice = a.open_price_usd ?? null;
 
       const inceptionIso =
-        body.type === "Spot"
+        body.bundle_type === "Spot"
           ? nowIso
           : a.inception_date
           ? new Date(a.inception_date).toISOString()
@@ -106,10 +106,10 @@ export async function POST(req: Request) {
       linkRows.push({
         bundle_id: bundleId,
         asset_id: assetId,
-        open_price_USD: openPrice,
+        open_price_usd: openPrice,
         shares: quantity,
         inception_date: inceptionIso,
-        rule_id: body.type === "Managed" ? (a.rule_id ?? null) : null, // <-- here
+        rule_id: body.bundle_type === "Managed" ? (a.rule_id ?? null) : null, // <-- here
       });
     }
 

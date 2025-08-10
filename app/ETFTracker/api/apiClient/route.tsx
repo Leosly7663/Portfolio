@@ -3,7 +3,7 @@
 // ---- Public API -------------------------------------------------------------
 
 export async function recomputeBundles(): Promise<void> {
-  const res = await fetch("/api/recompute", { method: "POST" });
+  const res = await fetch("ETFTracker/api/recompute", { method: "POST" });
   if (!res.ok) {
     const err = await safeJson(res);
     throw new Error(err?.error || `Recompute failed (${res.status})`);
@@ -12,17 +12,17 @@ export async function recomputeBundles(): Promise<void> {
 
 export type CreateBundleRequest = {
   name: string;
-  type: "Spot" | "Managed";
+  bundle_type: "Spot" | "Managed";
   assets: {
     ticker: string;
     shares?: number;
-    open_price_USD?: number | null;
+    open_price_usd?: number | null;
     inception_date?: string; // ISO (for Managed you can set per-asset)
   }[];
 };
 
 export async function createBundleApi(payload: CreateBundleRequest) {
-  const res = await fetch("/api/bundles", {
+  const res = await fetch("ETFTracker/api/bundles", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -91,7 +91,7 @@ export async function getQuote(symbol: string): Promise<Quote> {
  */
 export async function lookupQuote(symbol: string) {
   const sym = symbol.trim().toUpperCase();
-  const res = await fetch(`/api/StockQuotes?symbols=${encodeURIComponent(sym)}`);
+  const res = await fetch(`ETFTracker/api/StockQuotes?symbols=${encodeURIComponent(sym)}`);
   if (!res.ok) throw new Error(`Quote lookup failed (${res.status})`);
   const json = await res.json();
   // Expecting a map like { quotes: { [SYM]: {...} } }
