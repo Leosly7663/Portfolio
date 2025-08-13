@@ -10,12 +10,13 @@ type Quote = { price: number | null; previousClose: number | null; currency: str
 type RuleOption = { id: number; name: string };
 type AssetRow = {
   assetId: number;
-  linkId: number;           // from "Soln0002 - Assets to Bundles".id
-  ruleId: number | null;    // from "Soln0002 - Assets to Bundles".rule_id  👈 we use this now
+  linkId: number;           // "Assets to Bundles".id
+  ruleId: number | null;
   ticker: string;
   open_price_usd: number | null;
   inception_date: Date | null;
   shares: number;
+  limit_price?: number | null;   // 👈 derived from Order Items
 };
 
 export default function BundleDetailsPage() {
@@ -43,6 +44,39 @@ export default function BundleDetailsPage() {
     if (!id) return;
     fetchBundle();
   }, [id]);
+  
+  async function fetchLatestLimitPrices(linkIds: number[]) {
+    if (!linkIds.length) return {} as Record<number, number>;
+
+    const { data, error } = await supabase
+      .from('Soln0002 - Order Items')
+      .select(`
+        asset_bundle_link_id,
+        limit_price,
+        created_at,
+        order:"Soln0002 - Orders"(order_type)
+      `)
+      .in('asset_bundle_link_id', linkIds)
+      .not('limit_price', 'is', null)
+      .order('created_at', { ascending: false }); // if you lack created_at, change to .order('id', { ascending:false })
+
+    if (error || !data) {
+      console.error('fetchLatestLimitPrices:', error);
+      return {} as Record<number, number>;
+    }
+
+    // first row per linkId (because of DESC order) and only for non-Market orders
+    const byLink: Record<number, number> = {};
+    for (const row of data as any[]) {
+      const linkId = Number(row.asset_bundle_link_id);
+      const isLimit = row?.order?.order_type && row.order.order_type !== 'Market';
+      if (!isLimit) continue;
+      if (byLink[linkId] == null) {
+        byLink[linkId] = Number(row.limit_price);
+      }
+    }
+    return byLink;
+  }
 
   async function fetchBundle() {
     setLoading(true);
@@ -52,7 +86,7 @@ export default function BundleDetailsPage() {
       .select(`
         id,
         name,
-        type,
+        bundle_type,
         performance:bundle_pl,
         assets:"Soln0002 - Assets to Bundles" (
           id,
@@ -60,10 +94,7 @@ export default function BundleDetailsPage() {
           open_price_usd,
           inception_date,
           shares,
-          asset:"Soln0002 - Assets" (
-            id,
-            ticker
-          )
+          asset:"Soln0002 - Assets" ( id, ticker )
         )
       `)
       .eq("id", Number(id))
@@ -86,20 +117,30 @@ export default function BundleDetailsPage() {
       shares: row.shares ?? 1,
     }));
 
-    const b = { ...data, assets: normalizedAssets };
+    // 👇 fetch limit prices by link id (from Order Items)
+    const linkIds = normalizedAssets.map((a) => a.linkId);
+    const strikes = await fetchLatestLimitPrices(linkIds);
+
+    // merge strikes into assets
+    const assetsWithStrike = normalizedAssets.map((a) => ({
+      ...a,
+      limit_price: strikes[a.linkId] ?? null,
+    }));
+
+    const b = { ...data, assets: assetsWithStrike };
     setBundle(b);
     setLoading(false);
 
-    if (normalizedAssets.length) {
-      const symbols = normalizedAssets.map((a) => a.ticker?.toUpperCase()).filter(Boolean);
+    // quotes
+    if (assetsWithStrike.length) {
+      const symbols = assetsWithStrike.map((a) => a.ticker?.toUpperCase()).filter(Boolean);
       await fetchQuotes(symbols);
     }
 
-    // Rules list for Managed bundles
-    if (data.type === "Managed") {
+    // rules
+    if (data.bundle_type === "Managed" && assetsWithStrike.length) {
       await fetchRuleOptions();
-      // default selected link for Rules tab
-      if (normalizedAssets.length) setSelectedLinkId(normalizedAssets[0].linkId);
+      setSelectedLinkId(assetsWithStrike[0].linkId);
     }
   }
 
@@ -192,7 +233,7 @@ async function createAndAttachRuleForSelected() {
 }
 
 
-  const isManaged = bundle?.type === "Managed";
+  const isManaged = bundle?.bundle_type === "Managed";
 
   // Compute portfolio-level aggregates
   const totals = useMemo(() => {
@@ -373,6 +414,9 @@ function SpotTable({
   quotesLoading: boolean;
   totals: { totalCost: number; totalMkt: number; pl: number; plPct: number } | null;
 }) {
+  const hasStrike = Array.isArray(bundle.assets)
+    ? bundle.assets.some((a: AssetRow) => a?.limit_price != null)
+    : false
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
@@ -394,19 +438,20 @@ function SpotTable({
 
       <div className="overflow-x-auto rounded-xl border border-gray-200">
         <table className="min-w-full text-sm">
-          <thead className="bg-gray-50">
-            <tr className="text-left">
-              <th className="px-4 py-2 font-medium text-gray-600">Ticker</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Qty</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Open Date</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Open Price</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Last</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Today Δ</th>
-              <th className="px-4 py-2 font-medium text-gray-600">Today %Δ</th>
-              <th className="px-4 py-2 font-medium text-gray-600">All Time P/L</th>
-              <th className="px-4 py-2 font-medium text-gray-600">All Time P/L %</th>
-            </tr>
-          </thead>
+           <thead className="bg-gray-50">
+              <tr className="text-left">
+                <th className="px-4 py-2 font-medium text-gray-600">Ticker</th>
+                <th className="px-4 py-2 font-medium text-gray-600">Qty</th>
+                <th className="px-4 py-2 font-medium text-gray-600">Order Date</th>
+                <th className="px-4 py-2 font-medium text-gray-600">Open Price</th>
+                {hasStrike && <th className="px-4 py-2 font-medium text-gray-600">Strike</th>}
+                <th className="px-4 py-2 font-medium text-gray-600">Last</th>
+                <th className="px-4 py-2 font-medium text-gray-600">Today Δ</th>
+                <th className="px-4 py-2 font-medium text-gray-600">Today %Δ</th>
+                <th className="px-4 py-2 font-medium text-gray-600">All Time P/L</th>
+                <th className="px-4 py-2 font-medium text-gray-600">All Time P/L %</th>
+              </tr>
+            </thead>
           <tbody>
             {bundle.assets.map((a: AssetRow) => {
               const key = a.ticker?.toUpperCase?.() || "";
@@ -415,6 +460,7 @@ function SpotTable({
               const prev = typeof q?.previousClose === "number" ? q!.previousClose : null;
               const qty = Number(a.shares ?? 1);
               const costPerShare = Number(a.open_price_usd ?? 0) || 0;
+              const strike = a.limit_price != null ? Number(a.limit_price) : null;
               const dayChange = last != null && prev != null ? last - prev : null;
               const dayPct = last != null && prev ? ((last - prev) / prev) * 100 : null;
               const pl = last != null ? (last - costPerShare) * qty : null;
@@ -436,6 +482,9 @@ function SpotTable({
                       : "-"}
                   </td>
                   <td className="px-4 py-2">{costPerShare ? costPerShare.toFixed(2) : "-"}</td>
+                  {hasStrike && (
+                    <td className="px-4 py-2">{strike != null ? strike.toFixed(2) : "—"}</td>
+                  )}
                   <td className="px-4 py-2">{last != null ? last.toFixed(2) : "—"}</td>
                   <td className={`px-4 py-2 ${dayChange != null ? (dayChange >= 0 ? "text-green-600" : "text-red-600") : ""}`}>
                     {dayChange != null ? `${dayChange >= 0 ? "+" : ""}${dayChange.toFixed(2)}` : "—"}
@@ -487,11 +536,15 @@ function ManagedTable({
   rulesLoading: boolean;
   rulesError: string | null;
   onChangeRule: (linkId: number, ruleId: number | null) => Promise<void>;
-}) {
+}) 
+{
+  const router = useRouter();
+  const { id } = useParams();
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-end justify-between gap-3">
         <div className="text-sm text-gray-500">
+        
           {quotesLoading ? "Updating quotes…" : "Quotes up to ~15s cache."}
         </div>
         {totals && (
@@ -503,6 +556,13 @@ function ManagedTable({
               {bundle.performance >= 0 ? "+" : ""}
               {bundle.performance?.toFixed(2)}%
             </p>
+          <button
+          onClick={() => router.push(`/ETFTracker/${id}/live`)}
+          className="ml-auto px-3 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white"
+          title="Open live performance view"
+          >
+          View Live Performance
+          </button>
           </div>
         )}
       </div>

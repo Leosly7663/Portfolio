@@ -68,6 +68,9 @@ export function CreateBundlePanel({
   const [confirmPayload, setConfirmPayload] = useState<any | null>(null);
   const [confirmError, setConfirmError] = useState<string | null>(null);
 
+  const [preparing, setPreparing] = useState(false);
+  const [attemptedSubmit, setAttemptedSubmit] = useState(false);  
+
   // Fetch rules when panel is open AND type is Managed
   useEffect(() => {
     let cancelled = false;
@@ -99,6 +102,9 @@ export function CreateBundlePanel({
   }, [creating, bundleType]);
 
   const nowIsoLocal = () => new Date().toISOString();
+
+  
+
 
   function addFromLookup(result: Quote) {
     if (!result) return;
@@ -187,8 +193,10 @@ export function CreateBundlePanel({
   }
 
   // Pre-submit: validate & open modal (balance from API)
+
   async function openConfirm() {
     try {
+      setAttemptedSubmit(true);
       setFormError(null);
       setConfirmError(null);
 
@@ -196,31 +204,24 @@ export function CreateBundlePanel({
       if (!pending.length) throw new Error("Add at least one asset.");
 
       if (orderType === "PostOnly") {
-        const missing = pending.filter(
-          (p) => !(p.limitPrice && p.limitPrice > 0)
-        );
+        const missing = pending.filter((p) => !(p.limitPrice && p.limitPrice > 0));
         if (missing.length) {
-          throw new Error(
-            `Enter a strike price for: ${missing
-              .map((m) => m.ticker)
-              .join(", ")}`
-          );
+          throw new Error(`Enter a strike price for: ${missing.map((m) => m.ticker).join(", ")}`);
         }
       }
 
+      setPreparing(true);               // ⬅️ show “Preparing…”
       await fetchBalance(user!.id);
+
       setConfirmPayload({
         warnings: buildWarnings(),
-        ui: {
-          totalNotional: notional,
-          estFees: fees,
-          estTotal: total,
-          accountBalance,
-        },
+        ui: { totalNotional: notional, estFees: fees, estTotal: total, accountBalance },
       });
       setShowConfirm(true);
     } catch (e: any) {
       setFormError(e?.message || "Failed to prepare confirmation");
+    } finally {
+      setPreparing(false);              // ⬅️ back to normal
     }
   }
 
@@ -451,16 +452,16 @@ export function CreateBundlePanel({
           {/* Create */}
           <div className="flex justify-end">
             <button
-              onClick={openConfirm}
-              disabled={!bundleName.trim() || !pending.length || loading || createInFlight.current}
-              className={`mt-3 px-4 py-2 rounded-lg text-white ${
-                loading || createInFlight.current
-                  ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-blue-600 hover:bg-blue-700"
-              }`}
-            >
-              {loading || createInFlight.current ? "Preparing…" : "Review & Place Order"}
-            </button>
+            onClick={openConfirm}
+            disabled={preparing || loading || createInFlight.current} // ⬅️ removed name/pending guards
+            className={`mt-3 px-4 py-2 rounded-lg text-white ${
+              preparing || loading || createInFlight.current
+                ? "bg-gray-400 cursor-not-allowed"
+                : "bg-blue-600 hover:bg-blue-700"
+            }`}
+          >
+            {preparing || loading || createInFlight.current ? "Preparing…" : "Review & Place Order"}
+          </button>
           </div>
         </div>
       )}

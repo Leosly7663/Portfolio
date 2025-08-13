@@ -21,7 +21,7 @@ export function useBundles() {
     const { data, error } = await supabase
       .from("Soln0002 - Bundles")
       .select(
-        `id, name, type, bundle_pl, assets:"Soln0002 - Assets to Bundles"(asset:"Soln0002 - Assets"(id, ticker))`
+        `id, name, bundle_type, bundle_pl, assets:"Soln0002 - Assets to Bundles"(asset:"Soln0002 - Assets"(id, ticker))`
       );
 
     if (error) {
