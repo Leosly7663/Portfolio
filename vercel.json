@@ -1,0 +1,9 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "crons": [
+    {
+      "path": "/ETFTracker/api/orders/watch-limits",
+      "schedule": "*/2 * * * *"
+    }
+  ]
+}
