@@ -1,6 +1,9 @@
 // app/api/orders/create/route.ts
 import { NextResponse } from "next/server";
-import { createClient } from "@supabase/supabase-js";
+import {
+  getServerSupabase,
+  SERVER_SUPABASE_UNAVAILABLE_MESSAGE,
+} from "../../_lib/serverSupabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -36,13 +39,12 @@ type CreatePendingOrderBody = {
   currency?: string;
 };
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!, // server-only
-  { auth: { persistSession: false } }
-);
-
 async function ensureAssetsExist(tickers: string[]) {
+  const supabase = getServerSupabase();
+  if (!supabase) {
+    throw new Error(SERVER_SUPABASE_UNAVAILABLE_MESSAGE);
+  }
+
   const uniq = [...new Set(tickers.map(t => t.trim().toUpperCase()).filter(Boolean))];
   if (!uniq.length) return;
 
@@ -62,6 +64,14 @@ async function ensureAssetsExist(tickers: string[]) {
 
 export async function POST(req: Request) {
   try {
+    const supabase = getServerSupabase();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: SERVER_SUPABASE_UNAVAILABLE_MESSAGE },
+        { status: 503 }
+      );
+    }
+
     const body = (await req.json()) as CreatePendingOrderBody;
     const bp = body?.bundle_payload;
 

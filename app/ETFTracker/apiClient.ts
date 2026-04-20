@@ -1,9 +1,7 @@
-// app/utils/apiClient.ts
-
-// ---- Public API -------------------------------------------------------------
+// Shared client helpers for ETFTracker UI code.
 
 export async function recomputeBundles(): Promise<void> {
-  const res = await fetch("ETFTracker/api/recompute", { method: "POST" });
+  const res = await fetch("/ETFTracker/api/recompute", { method: "POST" });
   if (!res.ok) {
     const err = await safeJson(res);
     throw new Error(err?.error || `Recompute failed (${res.status})`);
@@ -17,12 +15,12 @@ export type CreateBundleRequest = {
     ticker: string;
     shares?: number;
     open_price_usd?: number | null;
-    inception_date?: string; // ISO (for Managed you can set per-asset)
+    inception_date?: string;
   }[];
 };
 
 export async function createBundleApi(payload: CreateBundleRequest) {
-  const res = await fetch("ETFTracker/api/bundles", {
+  const res = await fetch("/ETFTracker/api/bundles", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),
@@ -32,9 +30,6 @@ export async function createBundleApi(payload: CreateBundleRequest) {
   return json as { id: number };
 }
 
-/**
- * Normalized quote shape used across the app.
- */
 export type Quote = {
   ticker: string;
   price: number | null;
@@ -42,21 +37,15 @@ export type Quote = {
   previousClose: number | null;
 };
 
-/**
- * DRY shared fetcher: returns a normalized Quote for a single symbol.
- * Both the self-contained button and any hooks can use this.
- */
 export async function getQuote(symbol: string): Promise<Quote> {
   const sym = symbol.trim().toUpperCase();
   if (!sym) throw new Error("Symbol required");
 
-  // Use the same backend you already have:
-  const raw = await lookupQuote(sym); // may return provider-shaped object or null
+  const raw = await lookupQuote(sym);
   if (!raw) {
     throw new Error(`No quote for ${sym}`);
   }
 
-  // Normalize possible backend fields to a consistent shape
   const price =
     numOrNull(raw.price) ??
     numOrNull(raw.last) ??
@@ -83,22 +72,15 @@ export async function getQuote(symbol: string): Promise<Quote> {
   };
 }
 
-// ---- Legacy/compat helpers (kept, used by getQuote) ------------------------
-
-/**
- * Raw lookup to your existing endpoint. Returns the provider's quote object
- * (shape may vary) or null if not found. Prefer using getQuote() elsewhere.
- */
 export async function lookupQuote(symbol: string) {
   const sym = symbol.trim().toUpperCase();
-  const res = await fetch(`ETFTracker/api/StockQuotes?symbols=${encodeURIComponent(sym)}`);
+  const res = await fetch(
+    `/ETFTracker/api/StockQuotes?symbols=${encodeURIComponent(sym)}`
+  );
   if (!res.ok) throw new Error(`Quote lookup failed (${res.status})`);
   const json = await res.json();
-  // Expecting a map like { quotes: { [SYM]: {...} } }
   return json?.quotes?.[sym] ?? null;
 }
-
-// ---- Internals -------------------------------------------------------------
 
 async function safeJson(r: Response) {
   try {

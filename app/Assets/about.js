@@ -5,23 +5,54 @@ import Image from "next/image";
 
 const aboutSlides = [
   {
-    image: "/newpfp.jpg",
-    eyebrow: "Where I'm From",
-    title: "Rooted in Ontario",
-    text: "I grew up in a close-knit corner of Ontario where winter lasts long enough for snow to shape the rhythm of everyday life. That sense of calm, space, and consistency still shows up in the way I approach the things I make.",
+    mediaType: "image",
+    media: "/about-trips/IMG_5347.JPEG",
+    eyebrow: "New York",
+    title: "Late Nights In The City",
+    text: "New York brought the fast pace part of the trip: bright streets, long walks, and the kind of energy that makes you want to stay out a little longer just to take it all in.",
   },
   {
-    image: "/pfp3.jpg",
-    eyebrow: "Outside of Work",
-    title: "Skiing Is My Reset Button",
-    text: "Ski days are still some of my favourites. I love the early starts, the cold air, and the feeling of clearing my head on the mountain before coming back with fresh energy.",
+    mediaType: "image",
+    media: "/about-trips/IMG_5420.JPG",
+    eyebrow: "New York",
+    title: "A Trip Worth Remembering",
+    text: "I wanted this section to feel more personal, so I pulled in moments from this trip instead of writing another polished summary. It felt more honest to show the places that stuck with me.",
   },
   {
-    image: "/PFP.jpg",
-    eyebrow: "What Matters to Me",
-    title: "Thoughtful, Personal Work",
-    text: "I care a lot about making things that feel considered and approachable. Whether it is a portfolio, a tool, or a side project, I like work that feels polished without losing personality.",
+    mediaType: "image",
+    media: "/about-trips/IMG_7645.JPEG",
+    eyebrow: "Rochester",
+    title: "Quieter Stops Matter Too",
+    text: "Rochester had a totally different pace. It was calmer, more open, and a good reminder that some of the best parts of a trip are the slower moments in between the big headline destinations.",
   },
+  {
+    mediaType: "image",
+    media: "/about-trips/IMG_9131.JPEG",
+    eyebrow: "BC Ski Trip",
+    title: "Ski Days Are Still My Favourite",
+    text: "BC was the skiing chapter of the trip, and easily one of my favourite parts. I love the cold mornings, the gear-up routine, and that reset you get after a full day on the mountain.",
+  },
+  {
+    mediaType: "video",
+    media: "/about-trips/IMG_9131.MOV",
+    eyebrow: "BC Ski Trip",
+    title: "The Kind Of Break I Always Come Back To",
+    text: "Trips like this are a big part of who I am outside of work. Skiing clears my head, gives me something physical to chase, and usually leaves me coming back with better ideas.",
+  },
+  {
+    mediaType: "image",
+    media: "/about-trips/IMG_9163.JPEG",
+    eyebrow: "BC Ski Trip",
+    title: "Snow, Quiet, And A Reset",
+    text: "That BC snow felt like the perfect contrast to the city side of the trip. It was quiet, cold, and exactly the kind of environment that helps me slow down and enjoy the moment.",
+  },
+];
+
+const aboutHighlights = [
+  "Ontario based",
+  "New York memories",
+  "Rochester stops",
+  "BC ski trips",
 ];
 
 const About = () => {
@@ -30,7 +61,7 @@ const About = () => {
   useEffect(() => {
     const interval = setInterval(() => {
       setActiveSlide((current) => (current + 1) % aboutSlides.length);
-    }, 5000);
+    }, 5500);
 
     return () => clearInterval(interval);
   }, []);
@@ -46,39 +77,40 @@ const About = () => {
               About Me
             </p>
             <h2 className="mt-4 font-oswald text-4xl text-slate-900 md:text-5xl">
-              A little more personal, a little less polished in the corporate sense.
+              More of the person behind the work.
             </h2>
             <div className="mt-6 space-y-4 text-lg leading-8 text-slate-600">
               <p>
-                I&apos;m Leo, and I like building things that feel clean, useful,
-                and easy to connect with. The technical side matters to me, but
-                I&apos;m just as interested in the experience around it: how it
-                feels, how it reads, and whether it leaves a good impression.
+                I&apos;m Leo, from Ontario, and I want this part of the site to
+                feel more like a real introduction than a resume paragraph. A
+                lot of what shapes me happens outside of a screen, especially on
+                trips where I get to explore, ski, and take a step back from the
+                usual pace.
               </p>
               <p>
-                I&apos;m from Ontario, and for now this section leans into the
-                parts of my story that feel most like me outside of code. Skiing
-                has always been one of those anchors. It keeps me balanced, gets
-                me outside, and reminds me that some of the best ideas come when
-                you step away for a bit.
+                This set of photos comes from a trip through New York,
+                Rochester, and BC. I like that it holds a bit of everything:
+                city energy, quieter in-between stops, and the ski days that
+                always end up being the highlight for me.
               </p>
               <p>
-                I want this portfolio to feel like a real introduction, not just
-                a technical summary. So over time I&apos;ll keep adding more of
-                the places, hobbies, and moments that shaped how I work.
+                Skiing has been one of the most consistent things in my life for
+                a long time. It gives me a reset, keeps me outdoors, and
+                honestly makes me feel more like myself. That balance between
+                movement, curiosity, and calm is something I try to bring into
+                my work too.
               </p>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-3">
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700">
-                Based in Ontario
-              </span>
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700">
-                Loves ski season
-              </span>
-              <span className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700">
-                Enjoys thoughtful design
-              </span>
+              {aboutHighlights.map((item) => (
+                <span
+                  key={item}
+                  className="rounded-full border border-slate-200 bg-slate-50 px-4 py-2 text-sm font-medium text-slate-700"
+                >
+                  {item}
+                </span>
+              ))}
             </div>
           </div>
 
@@ -88,14 +120,31 @@ const About = () => {
                 {currentSlide.eyebrow}
               </div>
               <div className="relative aspect-[4/5] w-full">
-                <Image
-                  src={currentSlide.image}
-                  alt={currentSlide.title}
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 420px"
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/10 to-transparent" />
+                {currentSlide.mediaType === "video" ? (
+                  <>
+                    <video
+                      key={currentSlide.media}
+                      src={currentSlide.media}
+                      className="h-full w-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/10 to-transparent" />
+                  </>
+                ) : (
+                  <>
+                    <Image
+                      src={currentSlide.media}
+                      alt={currentSlide.title}
+                      fill
+                      sizes="(max-width: 1024px) 100vw, 420px"
+                      className="object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-slate-900/10 to-transparent" />
+                  </>
+                )}
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
                   <h3 className="text-2xl font-semibold">{currentSlide.title}</h3>
                   <p className="mt-3 text-sm leading-6 text-white/85">
@@ -109,7 +158,7 @@ const About = () => {
               <div className="flex gap-2">
                 {aboutSlides.map((slide, index) => (
                   <button
-                    key={slide.title}
+                    key={`${slide.title}-${index}`}
                     type="button"
                     aria-label={`Show ${slide.title}`}
                     onClick={() => setActiveSlide(index)}

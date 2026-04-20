@@ -243,9 +243,9 @@ It returns **semantic match percentages** using **sentence-transformer embedding
     galleryDescription: `
 This project blends a live ETF dashboard with AI-generated commentary to make portfolio updates feel more organized and useful.
 
-- Cloud-hosted data for the public dashboard
-- Local AI workflows for heavier analysis and writing
-- A calmer front-end structure for dense financial information
+- Live bundle performance views with spot and managed portfolio metrics
+- A documented system architecture connecting Next.js, Supabase, and the worker layer
+- Quant visuals like volatility surfaces and trade metrics for deeper research workflows
     `,
     caption:
       "A finance-focused product that connects live tracking, structured data, and AI commentary in one flow.",
@@ -253,34 +253,40 @@ This project blends a live ETF dashboard with AI-generated commentary to make po
       "The preview window lets the live tracker sit inside the project card while the right panel keeps the explanation compact.",
     media: [
       {
-        type: "panel",
-        gradient: "from-slate-900 via-slate-800 to-cyan-700",
-        eyebrow: "Dashboard Design",
-        title: "A calmer frame for market data.",
-        description:
-          "This concept focuses on giving ETF bundles, allocation changes, and commentary enough space to feel readable instead of cramped.",
-        details: [
-          "Public-facing dashboard backed by synced data",
-          "AI commentary blocks designed for fast scanning",
-        ],
-        tags: ["Next.js", "Tailwind CSS", "Vercel"],
+        type: "image",
+        src: "/etf-project/performance-metrics.png",
+        alt: "ETF bundle performance table showing managed portfolio metrics",
+        fit: "contain",
+        backgroundClassName: "bg-white",
         caption:
-          "The first panel presents the tracker as a clean, readable financial workspace rather than a dense wall of numbers.",
+          "Bundle-level performance tables show spot positions, daily movement, and all-time profit in a format that stays readable even with dense portfolio data.",
       },
       {
-        type: "panel",
-        gradient: "from-cyan-700 via-sky-700 to-indigo-800",
-        eyebrow: "Hybrid Workflow",
-        title: "Cloud on the outside, local AI underneath.",
-        description:
-          "The system balances public availability with a more private local environment for commentary generation and heavier data tasks.",
-        details: [
-          "Local analysis pipeline for AI-generated reports",
-          "Sync process to push polished data back to the web app",
-        ],
-        tags: ["Python", "Cloudflare", "Local AI"],
+        type: "image",
+        src: "/etf-project/trade-metrics.png",
+        alt: "Live trade metrics dashboard with websocket-updated sparkline cards",
+        fit: "contain",
+        backgroundClassName: "bg-white",
         caption:
-          "The hybrid architecture lets the front end stay fast while the heavier compute runs in a separate local workflow.",
+          "The live performance screen tracks short-window price movement through websocket-fed cards and a debug table for fast monitoring.",
+      },
+      {
+        type: "image",
+        src: "/etf-project/system-architecture.png",
+        alt: "Technical system architecture diagram for the ETF tracker pipeline",
+        fit: "contain",
+        backgroundClassName: "bg-white",
+        caption:
+          "The architecture diagram maps how the app connects the React front end, Supabase data layer, market feeds, and the worker logic for managed actions.",
+      },
+      {
+        type: "image",
+        src: "/etf-project/volatility-surface.png",
+        alt: "Implied volatility surface generated for an individual asset in the ETF workflow",
+        fit: "contain",
+        backgroundClassName: "bg-white",
+        caption:
+          "Research views like the volatility surface extend the project beyond simple tracking into options-aware analysis and deeper quantitative tooling.",
       },
     ],
     description: `
@@ -321,7 +327,44 @@ This system consists of two main components:
 - **AI Runtime**: Local inference for commentary generation
 - **Networking**: Cloudflare Tunnel for secure remote API access
 - **Data Sources**: Market data providers for pricing and portfolio updates
+
+### Visual Layers Added To The Project
+
+- **Performance Metrics**: tabular spot and managed views for bundle-level P/L, daily changes, and historical position context
+- **Live Trade Metrics**: sparkline cards and short-window performance reads for tracked assets in motion
+- **System Architecture Diagram**: a mapped view of the front end, Supabase storage, worker jobs, and managed trigger flow
+- **Volatility Surface Research**: an options-oriented analysis layer that pushes the project further into quant tooling
   `,
+    images: [
+      {
+        src: "/etf-project/performance-metrics.png",
+        alt: "ETF bundle performance metrics screenshot",
+        fit: "contain",
+        caption:
+          "Managed bundle breakdown with ticker-level quantity, open price, live last price, daily change, and all-time profit metrics.",
+      },
+      {
+        src: "/etf-project/trade-metrics.png",
+        alt: "ETF live trade metrics screenshot",
+        fit: "contain",
+        caption:
+          "Live performance dashboard using compact sparkline cards and interval-based movement reads for fast monitoring.",
+      },
+      {
+        src: "/etf-project/system-architecture.png",
+        alt: "ETF system architecture diagram",
+        fit: "contain",
+        caption:
+          "High-level architecture showing the relationship between the App Router UI, Supabase, market data layers, and the execution worker.",
+      },
+      {
+        src: "/etf-project/volatility-surface.png",
+        alt: "ETF volatility surface analysis screenshot",
+        fit: "contain",
+        caption:
+          "An implied volatility surface view for individual assets, representing the options-analysis direction of the project.",
+      },
+    ],
     tech: [
       {
         title: "Frontend & Presentation",

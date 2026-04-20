@@ -1,9 +1,12 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-// Adjust this import path if your supabaseClient lives elsewhere:
-import { supabase } from "../../../Lib/supabase/supabaseClient";
+import { BACKUP_MODE_MESSAGE, getBackupLiveBundle } from "../../backupClient";
+import {
+  isSupabaseConfigured,
+  supabase,
+} from "../../../Lib/supabase/supabaseClient";
 
 type Asset = { id: number; ticker: string };
 type Bar5s = { asset_id: number; bucket_start_ms: number; open: number; high: number; low: number; close: number; volume: number; trade_count: number };
@@ -22,10 +25,42 @@ export default function LivePerformancePage() {
   const [loading, setLoading] = useState(true);
   const [autoRefresh, setAutoRefresh] = useState(true);
   const [rangeMin, setRangeMin] = useState<5 | 15 | 60>(15); // 5, 15, or 60 minutes
+  const [usingBackup, setUsingBackup] = useState(false);
+  const [sourceMessage, setSourceMessage] = useState<string | null>(null);
+
+  const loadBackupBundle = useCallback(
+    async (message = BACKUP_MODE_MESSAGE) => {
+      if (!id) return;
+
+      const fallback = await getBackupLiveBundle(Number(id), rangeMin);
+      if (!fallback) {
+        setAssets([]);
+        setLoading(false);
+        return;
+      }
+
+      setBundleName(fallback.bundleName);
+      setAssets(fallback.assets);
+      setBarsByAsset(fallback.barsByAsset);
+      setLastByAsset(fallback.lastByAsset);
+      setUsingBackup(true);
+      setSourceMessage(message);
+      setAutoRefresh(false);
+      setLoading(false);
+    },
+    [id, rangeMin]
+  );
 
   // Fetch bundle meta + assets
   useEffect(() => {
     if (!id) return;
+    if (!isSupabaseConfigured || !supabase) {
+      loadBackupBundle(
+        "Supabase configuration is missing. Showing the bundled backup snapshot."
+      );
+      return;
+    }
+
     (async () => {
       setLoading(true);
       // 1) bundle name + asset list
@@ -42,8 +77,7 @@ export default function LivePerformancePage() {
 
       if (bErr || !bundle) {
         console.error(bErr);
-        setAssets([]);
-        setLoading(false);
+        await loadBackupBundle();
         return;
       }
 
@@ -57,11 +91,18 @@ export default function LivePerformancePage() {
 
       setAssets(a);
       setLoading(false);
+      setUsingBackup(false);
+      setSourceMessage(null);
     })();
-  }, [id]);
+  }, [id, loadBackupBundle]);
 
   // Fetch OHLCV + last prices for current range
-  async function refresh() {
+  const refresh = useCallback(async () => {
+    if (usingBackup) {
+      await loadBackupBundle();
+      return;
+    }
+
     if (!assets.length) return;
     const sinceMs = Date.now() - rangeMin * 60 * 1000;
     const assetIds = assets.map(a => a.id);
@@ -111,18 +152,18 @@ export default function LivePerformancePage() {
       };
     });
     setLastByAsset(lastMap);
-  }
+  }, [assets, loadBackupBundle, rangeMin, usingBackup]);
 
   // Initial + auto refresh
   useEffect(() => {
     refresh();
-  }, [assets, rangeMin]);
+  }, [refresh]);
 
   useEffect(() => {
     if (!autoRefresh) return;
     const t = setInterval(() => refresh(), 5000);
     return () => clearInterval(t);
-  }, [autoRefresh, assets, rangeMin]);
+  }, [autoRefresh, refresh]);
 
   const cards = useMemo(() => {
     return assets.map((a) => {
@@ -147,6 +188,15 @@ export default function LivePerformancePage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 py-6 space-y-4">
+      {usingBackup && (
+        <div className="rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          {sourceMessage}
+          <div className="mt-1 text-amber-800">
+            This live view is using the bundled snapshot and does not update in real time.
+          </div>
+        </div>
+      )}
+
       <div className="flex items-center gap-3">
         <button
           onClick={() => router.back()}

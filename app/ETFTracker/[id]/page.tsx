@@ -1,8 +1,12 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { supabase } from "../../Lib/supabase/supabaseClient";
+import { BACKUP_MODE_MESSAGE, getBackupBundleDetail } from "../backupClient";
+import {
+  isSupabaseConfigured,
+  supabase,
+} from "../../Lib/supabase/supabaseClient";
 import { LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
 
 /* ======================== Types ======================== */
@@ -39,12 +43,9 @@ export default function BundleDetailsPage() {
 
   // rules tab: which asset link to edit
   const [selectedLinkId, setSelectedLinkId] = useState<number | null>(null);
+  const [usingBackup, setUsingBackup] = useState(false);
+  const [sourceMessage, setSourceMessage] = useState<string | null>(null);
 
-  useEffect(() => {
-    if (!id) return;
-    fetchBundle();
-  }, [id]);
-  
   async function fetchLatestLimitPrices(linkIds: number[]) {
     if (!linkIds.length) return {} as Record<number, number>;
 
@@ -78,7 +79,37 @@ export default function BundleDetailsPage() {
     return byLink;
   }
 
-  async function fetchBundle() {
+  const loadBackupBundle = useCallback(
+    async (message = BACKUP_MODE_MESSAGE) => {
+      if (!id) return;
+
+      const fallback = await getBackupBundleDetail(Number(id));
+      if (!fallback) {
+        setBundle(null);
+        setLoading(false);
+        return;
+      }
+
+      setBundle(fallback.bundle);
+      setQuotes(fallback.quotes);
+      setRuleOptions(fallback.ruleOptions);
+      setSelectedLinkId(fallback.bundle.assets[0]?.linkId ?? null);
+      setUsingBackup(true);
+      setSourceMessage(message);
+      setLoading(false);
+    },
+    [id]
+  );
+
+  const fetchBundle = useCallback(async () => {
+    if (!id) return;
+    if (!isSupabaseConfigured || !supabase) {
+      await loadBackupBundle(
+        "Supabase configuration is missing. Showing the bundled backup snapshot."
+      );
+      return;
+    }
+
     setLoading(true);
 
     const { data, error } = await supabase
@@ -102,8 +133,7 @@ export default function BundleDetailsPage() {
 
     if (error || !data) {
       console.error(error);
-      setBundle(null);
-      setLoading(false);
+      await loadBackupBundle();
       return;
     }
 
@@ -130,6 +160,8 @@ export default function BundleDetailsPage() {
     const b = { ...data, assets: assetsWithStrike };
     setBundle(b);
     setLoading(false);
+    setUsingBackup(false);
+    setSourceMessage(null);
 
     // quotes
     if (assetsWithStrike.length) {
@@ -142,7 +174,11 @@ export default function BundleDetailsPage() {
       await fetchRuleOptions();
       setSelectedLinkId(assetsWithStrike[0].linkId);
     }
-  }
+  }, [id, loadBackupBundle]);
+
+  useEffect(() => {
+    fetchBundle();
+  }, [fetchBundle]);
 
   async function fetchQuotes(symbols: string[]) {
     if (!symbols.length) return;
@@ -181,7 +217,7 @@ export default function BundleDetailsPage() {
 
 
 async function createAndAttachRuleForSelected() {
-  if (!selectedLinkId || !bundle) return;
+  if (!selectedLinkId || !bundle || usingBackup || !supabase) return;
 
   const selected = bundle.assets.find((a: AssetRow) => a.linkId === selectedLinkId);
   if (!selected) return;
@@ -259,6 +295,15 @@ async function createAndAttachRuleForSelected() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-6">
+      {usingBackup && (
+        <div className="mb-4 rounded-2xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+          {sourceMessage}
+          <div className="mt-1 text-amber-800">
+            This bundle view is read-only while the local backup snapshot is in use.
+          </div>
+        </div>
+      )}
+
       {/* Back button */}
       <button
         onClick={() => router.back()}
@@ -340,7 +385,9 @@ async function createAndAttachRuleForSelected() {
           ruleOptions={ruleOptions}
           rulesLoading={rulesLoading}
           rulesError={rulesError}
+          readOnly={usingBackup}
           onChangeRule={async (linkId, ruleId) => {
+            if (usingBackup || !supabase) return;
             // update link row
             const { error } = await supabase
               .from("Soln0002 - Assets to Bundles")
@@ -365,11 +412,17 @@ async function createAndAttachRuleForSelected() {
       {/* Rules TAB */}
       {activeTab === "Rules" && isManaged && (
         <div className="space-y-4">
+          {usingBackup && (
+            <div className="rounded-xl border border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-900">
+              Rule editing is disabled in backup mode.
+            </div>
+          )}
           <div className="flex items-center gap-2">
             <label className="text-sm text-gray-600">Select asset:</label>
             <select
               value={selectedLinkId ?? ""}
               onChange={(e) => setSelectedLinkId(e.target.value ? Number(e.target.value) : null)}
+              disabled={usingBackup}
               className="border rounded-lg px-2 py-2"
             >
               {bundle.assets.map((a: AssetRow) => (
@@ -380,7 +433,7 @@ async function createAndAttachRuleForSelected() {
             </select>
           </div>
 
-          {selectedLinkId ? (
+          {selectedLinkId && !usingBackup ? (
             (() => {
               const selected = bundle.assets.find((a: AssetRow) => a.linkId === selectedLinkId);
               return (
@@ -526,6 +579,7 @@ function ManagedTable({
   ruleOptions,
   rulesLoading,
   rulesError,
+  readOnly,
   onChangeRule,
 }: {
   bundle: any;
@@ -535,6 +589,7 @@ function ManagedTable({
   ruleOptions: RuleOption[];
   rulesLoading: boolean;
   rulesError: string | null;
+  readOnly: boolean;
   onChangeRule: (linkId: number, ruleId: number | null) => Promise<void>;
 }) 
 {
@@ -621,7 +676,7 @@ function ManagedTable({
                     <select
                       value={a.ruleId ?? ""}
                       onChange={(e) => onChangeRule(a.linkId, e.target.value ? Number(e.target.value) : null)}
-                      disabled={rulesLoading}
+                      disabled={rulesLoading || readOnly}
                       className="min-w-52 border rounded-lg px-2 py-2 bg-white"
                     >
                       <option value="">{rulesLoading ? "Loading rules…" : "— No rules —"}</option>
@@ -714,7 +769,7 @@ function ManagedRulesEditorCore({
   const [error, setError] = useState<string | null>(null);
   const [rules, setRules] = useState<ManagedRuleSet | null>(null);
 
-  const defaultRules: ManagedRuleSet = {
+  const defaultRules = useMemo<ManagedRuleSet>(() => ({
     id: ruleId,
     name: null,
     active: true,
@@ -723,7 +778,7 @@ function ManagedRulesEditorCore({
     risk: { stopLossPct: null, takeProfitPct: null, trailing: false },
     dca: { enabled: false, every: "week", quantity: null, dayOfWeek: 1, dayOfMonth: 1 },
     notes: null,
-  };
+  }), [ruleId]);
 
   useEffect(() => {
     let abort = false;
@@ -753,7 +808,7 @@ function ManagedRulesEditorCore({
       }
     })();
     return () => { abort = true; };
-  }, [ruleId]); // stable hook order
+  }, [defaultRules, ruleId]); // stable hook order
 
   async function save() {
     if (!rules) return;

@@ -1,7 +1,10 @@
 // app/api/bundles/recompute/route.ts
 import { NextResponse } from "next/server";
 import yahooFinance from "yahoo-finance2";
-import { createClient } from "@supabase/supabase-js";
+import {
+  getServerSupabase,
+  SERVER_SUPABASE_UNAVAILABLE_MESSAGE,
+} from "../_lib/serverSupabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -22,17 +25,12 @@ type BundleRow = {
   assets?: LinkRow[] | null;
 };
 
-type Quote = { price: number | null; previousClose: number | null; currency: string | null };
+type Quote = {
+  price: number | null;
+  previousClose: number | null;
+  currency: string | null;
+};
 
-// ✅ SERVER-SIDE Supabase client (service role bypasses RLS)
-// Do NOT import your client-side supabase file here.
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.SUPABASE_SERVICE_ROLE_KEY!, // keep this ONLY on server
-  { auth: { persistSession: false } }
-);
-
-// Safely extract a ticker whether `asset` is an object or an array
 function getTicker(asset: AssetRecordMaybeArray): string | null {
   if (!asset) return null;
   if (Array.isArray(asset)) {
@@ -73,7 +71,14 @@ async function getQuotesMap(symbols: string[]): Promise<Record<string, Quote>> {
 
 export async function POST() {
   try {
-    // 1) Load bundles
+    const supabase = getServerSupabase();
+    if (!supabase) {
+      return NextResponse.json(
+        { error: SERVER_SUPABASE_UNAVAILABLE_MESSAGE },
+        { status: 503 }
+      );
+    }
+
     const { data, error } = await supabase
       .from("Soln0002 - Bundles")
       .select(`
@@ -91,7 +96,6 @@ export async function POST() {
 
     const bundles = (data ?? []) as unknown as BundleRow[];
 
-    // 2) Collect symbols and fetch quotes once
     const symbols = Array.from(
       new Set(
         bundles
@@ -104,7 +108,6 @@ export async function POST() {
     const quotesMap: Record<string, Quote> =
       symbols.length ? await getQuotesMap(symbols) : {};
 
-    // 3) Compute and update each bundle
     let updated = 0;
 
     for (const b of bundles) {
@@ -150,7 +153,6 @@ export async function POST() {
     return NextResponse.json({ updated, total: bundles.length });
   } catch (e: any) {
     console.error("Recompute route fatal error:", e?.message || e);
-    // Return a sanitized error so you see *something* in the client
     return NextResponse.json(
       { error: e?.message || "Internal error" },
       { status: 500 }

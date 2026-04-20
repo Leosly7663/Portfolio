@@ -1,5 +1,5 @@
 "use client";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { computeFees } from "./components/orders/fees";
 import type { PendingAsset, OrderType, BundleType, BundlePayload } from "./components/orders/types";
 
@@ -16,12 +16,15 @@ export function useOrderPlacement() {
     [pending]
   );
 
-  const intendedPrice = (a: PendingAsset) =>
-    orderType === "PostOnly" ? a.limitPrice ?? a.priceAtAdd ?? 0 : a.priceAtAdd ?? 0;
+  const intendedPrice = useCallback(
+    (a: PendingAsset) =>
+      orderType === "PostOnly" ? a.limitPrice ?? a.priceAtAdd ?? 0 : a.priceAtAdd ?? 0,
+    [orderType]
+  );
 
   const notional = useMemo(
     () => pending.reduce((s, a) => s + intendedPrice(a) * (Number(a.shares) || 0), 0),
-    [pending, orderType]
+    [pending, intendedPrice]
   );
 
   const { fees, total } = useMemo(() => computeFees(notional), [notional]);

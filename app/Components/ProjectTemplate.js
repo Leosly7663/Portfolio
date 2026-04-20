@@ -93,20 +93,35 @@ const ProjectTemplate = ({
         <section className="mx-auto mt-8 max-w-5xl rounded-[2rem] border border-white/70 bg-white/85 p-8 shadow-[0_30px_80px_rgba(15,23,42,0.09)] backdrop-blur">
           <h2 className="font-oswald text-3xl text-slate-900">Screenshots</h2>
           <div className="mt-6 grid grid-cols-1 gap-6 md:grid-cols-2">
-            {images.map((img, index) => (
-              <div
-                key={img}
-                className="relative aspect-[4/3] overflow-hidden rounded-[1.5rem] border border-slate-200 bg-slate-100"
-              >
-                <Image
-                  src={img}
-                  alt={`Screenshot ${index + 1}`}
-                  fill
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-cover transition-transform duration-300 hover:scale-105"
-                />
-              </div>
-            ))}
+            {images.map((img, index) => {
+              const image = typeof img === "string" ? { src: img } : img;
+
+              return (
+                <div
+                  key={image.src}
+                  className="overflow-hidden rounded-[1.5rem] border border-slate-200 bg-white"
+                >
+                  <div className="relative aspect-[16/10] bg-slate-100">
+                    <Image
+                      src={image.src}
+                      alt={image.alt || `Screenshot ${index + 1}`}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 50vw"
+                      className={`transition-transform duration-300 hover:scale-[1.02] ${
+                        image.fit === "contain"
+                          ? "object-contain p-4"
+                          : "object-cover"
+                      }`}
+                    />
+                  </div>
+                  {image.caption && (
+                    <div className="border-t border-slate-200 px-4 py-3 text-sm leading-6 text-slate-600">
+                      {image.caption}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </div>
         </section>
       )}

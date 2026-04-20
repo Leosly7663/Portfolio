@@ -33,13 +33,19 @@ const GalleryPanel = ({ item }) => {
 
   if (item.type === "image") {
     return (
-      <div className="relative h-full overflow-hidden rounded-[1.75rem] bg-slate-100">
+      <div
+        className={`relative h-full overflow-hidden rounded-[1.75rem] ${
+          item.backgroundClassName || "bg-slate-100"
+        }`}
+      >
         <Image
           src={item.src}
           alt={item.alt}
           fill
           sizes="(max-width: 1024px) 100vw, 800px"
-          className="object-cover"
+          className={`${
+            item.fit === "contain" ? "object-contain p-4" : "object-cover"
+          }`}
         />
       </div>
     );
