@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 // Adjust this import path if your supabaseClient lives elsewhere:
 import { supabase } from "../../../Lib/supabase/supabaseClient";
@@ -61,7 +61,7 @@ export default function LivePerformancePage() {
   }, [id]);
 
   // Fetch OHLCV + last prices for current range
-  async function refresh() {
+  const refresh = useCallback(async () => {
     if (!assets.length) return;
     const sinceMs = Date.now() - rangeMin * 60 * 1000;
     const assetIds = assets.map(a => a.id);
@@ -111,18 +111,18 @@ export default function LivePerformancePage() {
       };
     });
     setLastByAsset(lastMap);
-  }
+  }, [assets, rangeMin]);
 
   // Initial + auto refresh
   useEffect(() => {
     refresh();
-  }, [assets, rangeMin]);
+  }, [refresh]);
 
   useEffect(() => {
     if (!autoRefresh) return;
     const t = setInterval(() => refresh(), 5000);
     return () => clearInterval(t);
-  }, [autoRefresh, assets, rangeMin]);
+  }, [autoRefresh, refresh]);
 
   const cards = useMemo(() => {
     return assets.map((a) => {

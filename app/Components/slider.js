@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import Slider from 'react-slick';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
+import React, { useState } from "react";
+import Image from "next/image";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 
 const ImageCarousel = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
@@ -17,16 +18,16 @@ const ImageCarousel = () => {
 
   const slides = [
     {
-      imageUrl: "PythonHUDSystem.png",
-      subtitle: 'This is a python sysm',
+      imageUrl: "/PythonHUDSystem.png",
+      subtitle: "This is a python sysm",
     },
     {
-      imageUrl: 'image2.jpg',
-      subtitle: 'Subtitle 2',
+      imageUrl: "/PythonHUDFigma.png",
+      subtitle: "Subtitle 2",
     },
     {
-      imageUrl: 'image3.jpg',
-      subtitle: 'Subtitle 3',
+      imageUrl: "/LOAS_Figma.png",
+      subtitle: "Subtitle 3",
     },
   ];
 
@@ -35,7 +36,15 @@ const ImageCarousel = () => {
       <Slider {...settings}>
         {slides.map((slide, index) => (
           <div key={index}>
-            <img src={slide.imageUrl} alt={`Slide ${index}`} />
+            <div className="relative aspect-[16/9] w-full overflow-hidden rounded-xl">
+              <Image
+                src={slide.imageUrl}
+                alt={`Slide ${index + 1}`}
+                fill
+                sizes="100vw"
+                className="object-cover"
+              />
+            </div>
             <p>{slide.subtitle}</p>
           </div>
         ))}

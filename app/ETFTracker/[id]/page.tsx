@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { supabase } from "../../Lib/supabase/supabaseClient";
 import { LockClosedIcon, PencilSquareIcon } from "@heroicons/react/24/solid";
@@ -40,11 +40,6 @@ export default function BundleDetailsPage() {
   // rules tab: which asset link to edit
   const [selectedLinkId, setSelectedLinkId] = useState<number | null>(null);
 
-  useEffect(() => {
-    if (!id) return;
-    fetchBundle();
-  }, [id]);
-  
   async function fetchLatestLimitPrices(linkIds: number[]) {
     if (!linkIds.length) return {} as Record<number, number>;
 
@@ -78,7 +73,8 @@ export default function BundleDetailsPage() {
     return byLink;
   }
 
-  async function fetchBundle() {
+  const fetchBundle = useCallback(async () => {
+    if (!id) return;
     setLoading(true);
 
     const { data, error } = await supabase
@@ -142,7 +138,11 @@ export default function BundleDetailsPage() {
       await fetchRuleOptions();
       setSelectedLinkId(assetsWithStrike[0].linkId);
     }
-  }
+  }, [id]);
+
+  useEffect(() => {
+    fetchBundle();
+  }, [fetchBundle]);
 
   async function fetchQuotes(symbols: string[]) {
     if (!symbols.length) return;
@@ -714,7 +714,7 @@ function ManagedRulesEditorCore({
   const [error, setError] = useState<string | null>(null);
   const [rules, setRules] = useState<ManagedRuleSet | null>(null);
 
-  const defaultRules: ManagedRuleSet = {
+  const defaultRules = useMemo<ManagedRuleSet>(() => ({
     id: ruleId,
     name: null,
     active: true,
@@ -723,7 +723,7 @@ function ManagedRulesEditorCore({
     risk: { stopLossPct: null, takeProfitPct: null, trailing: false },
     dca: { enabled: false, every: "week", quantity: null, dayOfWeek: 1, dayOfMonth: 1 },
     notes: null,
-  };
+  }), [ruleId]);
 
   useEffect(() => {
     let abort = false;
@@ -753,7 +753,7 @@ function ManagedRulesEditorCore({
       }
     })();
     return () => { abort = true; };
-  }, [ruleId]); // stable hook order
+  }, [defaultRules, ruleId]); // stable hook order
 
   async function save() {
     if (!rules) return;

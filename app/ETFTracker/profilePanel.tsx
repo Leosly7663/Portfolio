@@ -57,7 +57,7 @@ export default function ProfilePanel() {
     } finally {
       setAuthProcessing(false);
     }
-  }, [canSubmitAuth, email, mode, password, signIn, signUp, username]);
+  }, [canSubmitAuth, email, mode, password, signIn, signUp]);
 
   const canSaveProfile = useMemo(() => {
     if (saveProcessing || !profile) return false;
