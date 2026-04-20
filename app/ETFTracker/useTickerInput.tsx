@@ -1,6 +1,6 @@
 "use client";
 import { useCallback, useState } from "react";
-import { getQuote, type Quote } from "./api/apiClient/route";
+import { getQuote, type Quote } from "./apiClient";
 
 export function useTickerLookup() {
   const [symbol, setSymbol] = useState("");

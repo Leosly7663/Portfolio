@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "../Lib/supabase/supabaseClient";
-import { recomputeBundles } from "./api/apiClient/route";
+import { recomputeBundles } from "./apiClient";
 
 export type BundleRow = {
   id: number;

@@ -4,7 +4,7 @@ import { FEE_FLAT, FEE_BPS } from "./components/orders/fees";
 import React, { useMemo, useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "./useAuth";
-import { getQuote, type Quote } from "./api/apiClient/route";
+import { getQuote, type Quote } from "./apiClient";
 import LookupAddInputButton from "./components/LookupAddInputButton";
 import { supabase } from "../Lib/supabase/supabaseClient";
 
