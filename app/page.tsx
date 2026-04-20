@@ -1,62 +1,32 @@
-"use client"
-import NavBar from './Components/Menu';
-import TitleCard from './Assets/Profile';
-import About from "./Assets/about"
-import StarFieldBackground from "./Assets/backParticleMist";
+"use client";
+
+import NavBar from "./Components/Menu";
+import TitleCard from "./Assets/Profile";
+import About from "./Assets/about";
 import ExperienceTimeline from "./Assets/experienceTimeline";
-import Projects from "./Assets/projects"
-import Footer from "./Assets/footer.js"
-import Fetch from "./Components/Fetch.js"
-import Highlight from "./Assets/highlights.js"
+import Projects from "./Assets/projects";
+import Footer from "./Assets/footer.js";
 
 const App = () => {
-
-
   return (
-    <div className="bg-slate-600">
-      <div className=" ">
-        <NavBar />
-      </div>
-
-      <div className='Main pt-10  bg-slate-600 '>
-        <div className="absolute justify-center flex-col w-full">
-          <div className=' bg-gradient-to-b from-gray-700 to-95% to-black absolute flex h-full inset-0 -z-10'>
-            <StarFieldBackground
-            numStars={150}
-            sizeRange={[1, 3.5]}
-            parallaxFactor={4.2}
-            colorPalette={["#ffffff", "#ffeaa7", "#81ecec"]}
-            colorWeights={[0.6, 0.2, 0.2]}
-            animationConfig={{
-              fadeInSpeed: 0.008,
-              fadeOutSpeed: 0.01,
-              movementSpeed: 0.2,
-              maxLifeRange: [400, 800],
-            }}
-          />
-          </div>
-          <TitleCard />
-          <div id="about">
-            <About />
-          </div>
-          <div id="highlights">
-            <Projects />
-          </div>
-           <div id="highlights">
-            <ExperienceTimeline />
-          </div>
-           
-          <div id="contact">
-            <Footer />
-          </div>
-
+    <div className="min-h-screen text-slate-900">
+      <NavBar />
+      <main id="top" className="relative overflow-hidden pb-10">
+        <div className="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[38rem] bg-[radial-gradient(circle_at_top_left,_rgba(56,189,248,0.18),_transparent_34%),radial-gradient(circle_at_top_right,_rgba(244,114,182,0.16),_transparent_28%)]" />
+        <TitleCard />
+        <div id="about">
+          <About />
         </div>
-
-
-
-
-
-      </div>
+        <div id="highlights">
+          <Projects />
+        </div>
+        <div id="experience">
+          <ExperienceTimeline />
+        </div>
+        <div id="contact">
+          <Footer />
+        </div>
+      </main>
     </div>
   );
 };
