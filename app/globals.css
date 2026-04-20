@@ -9,6 +9,28 @@
   src: url("../public/fonts/Oswald/Oswald-VariableFont_wght.ttf");
 }
 
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  color: #0f172a;
+  background:
+    linear-gradient(rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.12) 1px, transparent 1px),
+    radial-gradient(circle at top left, rgba(56, 189, 248, 0.14), transparent 30%),
+    radial-gradient(circle at top right, rgba(244, 114, 182, 0.12), transparent 24%),
+    #f8fafc;
+  background-size: 32px 32px, 32px 32px, auto, auto, auto;
+  font-family: "Poppins", sans-serif;
+}
+
+::selection {
+  background: rgba(14, 165, 233, 0.18);
+  color: #0f172a;
+}
+
 
 .highlight {
   width: 500px;
@@ -95,10 +117,10 @@
 
 
 .btn {
-  color: purple;
+  color: #0f172a;
   text-transform: uppercase;
   text-decoration: none;
-  border: 2px solid purple;
+  border: 2px solid #0f172a;
   padding: 10px 20px;
   font-size: 17px;
   font-weight: bold;
@@ -120,7 +142,7 @@
   top: 0;
   left: -40px;
   transform: skewX(45deg);
-  background-color: purple;
+  background-color: #0f172a;
   z-index: -1;
   transition: all 1s;
 }
