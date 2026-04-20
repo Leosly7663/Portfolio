@@ -5,7 +5,7 @@ import yahooFinance from "yahoo-finance2";
 import {
   getServerSupabase,
   SERVER_SUPABASE_UNAVAILABLE_MESSAGE,
-} from "../_lib/serverSupabase";
+} from "../../_lib/serverSupabase";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
